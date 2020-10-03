@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 
 public class Parsing {
-	public static void parseRoute(ArrayList<Pair<Double,Double>> list,int routeID, int directionID) throws IOException {
+	public static ArrayList<Pair<Double,Double>> parseRoute(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = Parsing.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);
+		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
 		for (CSVRecord record : records) {
 			if (record.get("route_id").equals(String.valueOf(routeID)) && record.get("direction_id").equals(String.valueOf(directionID))){
 				String value = record.get("WKT");
@@ -32,12 +33,13 @@ public class Parsing {
 						i++; // hay un espacio despues de la coma
 						start = i + 1;
 						Pair<Double,Double> coord = new Pair<>(lat,lng);
-						list.add(coord);
+						coordList.add(coord);
 					}
 				}
 				break; //para que no siga recorriendo el csv una vez que ya encontro el recorrido que quiere
 			}
 		}
 		in.close();
+		return coordList;
 	}
 }
