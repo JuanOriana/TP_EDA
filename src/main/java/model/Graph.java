@@ -10,8 +10,8 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graph {
-    private HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
-    private HashMap<Node, List<Pair<Node,Double>>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
+    public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
+    public HashMap<Node, List<Pair<Node,Double>>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
     private HashMap<Node,Integer> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
@@ -46,6 +46,7 @@ public class Graph {
             }
             lineNodes.add(new Node(nextLine[8],new Pair<>(Double.parseDouble(nextLine[3]),Double.parseDouble(nextLine[4]))));
         }
+        loadLine(lineNodes,routeId,directionId);
     }
 
     void loadLine(Set<Node> lineNodes, int routeId, int directionId ){
@@ -68,10 +69,10 @@ public class Graph {
             double dist = toAdd.manhattanDist(last.getCoordinates());
 
             edges.putIfAbsent(toAdd, new ArrayList<>());
-            edges.get(toAdd).add(new Pair<>(last, dist));
+            edges.get(toAdd).add(new Pair<>(last, dist*1000));
 
             edges.putIfAbsent(last, new ArrayList<>());
-            edges.get(last).add(new Pair<>(toAdd, dist));
+            edges.get(last).add(new Pair<>(toAdd, dist*1000));
             last=toAdd;
         }
 
@@ -96,5 +97,14 @@ public class Graph {
     public static void main(String[] args) throws IOException {
         Graph graph = new Graph();
         graph.setUp();
+        for (Node node:graph.nodes){
+            System.out.println("--------------------------");
+            System.out.println(node);
+            if (graph.edges.get(node)!=null)
+            for (Pair<Node,Double> edge: graph.edges.get(node)){
+                System.out.println(edge);
+            }
+        }
+        System.out.println(graph.nodes.size());
     }
 }
