@@ -9,10 +9,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Parsing {
-	public static ArrayList<Pair<Double,Double>> parseRoute(int routeID, int directionID) throws IOException {
+	static Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
+	public static ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = Parsing.class.getResourceAsStream(fileName);
@@ -41,5 +44,35 @@ public class Parsing {
 		}
 		in.close();
 		return coordList;
+	}
+	public static ArrayList<Pair<Double,Double>> parseRoute(int routeID, int directionID) throws IOException {
+		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
+		coordList.add(parseMap.get(new Pair<>(routeID, directionID)));
+		return coordList;
+	}
+
+	public static void createParse() throws IOException {
+		String fileName = "/recorrido-colectivos.csv";
+		InputStream is = Parsing.class.getResourceAsStream(fileName);
+		Reader in = new InputStreamReader(is);
+		Iterable<CSVRecord> records = CSVFormat.DEFAULT
+				.withFirstRecordAsHeader().parse(in);
+		String lat = "", lng;
+		for (CSVRecord record : records) {
+			String value = record.get("WKT");
+			for (int i = 12, match = 0; i < value.length() && match==0; i++){
+				if (value.charAt(i) == ' ') {
+					lat = value.substring(12,i);
+				}else if (value.charAt(i) == ',' || i == value.length() - 1) {
+					lng=value.substring(12 + lat.length(),i);
+					Pair<Double,Double> coord = new Pair<>(Double.parseDouble(lat),Double.parseDouble(lng));
+					Pair<Integer, Integer> key = new Pair<>(Integer.parseInt(record.get("route_id")), Integer.parseInt(record.get("direction_id")));
+					parseMap.put(key,coord);
+					match = 1;
+				}
+			}
+
+		}
+		in.close();
 	}
 }
