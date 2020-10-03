@@ -52,25 +52,7 @@ public class Node {
                 ", stopNumber=" + stopNumber +
                 '}';
     }
-
-    public int closest(List<Pair<Double, Double>> points) {
-
-        if (points.size() < 1) throw new RuntimeException("Empty node list");
-
-        int minIndex = 0, currentIndex = 0;
-        double minDist = manhattanDist(points.get(0));
-
-        for (Pair p : points) {
-            double currentDist = manhattanDist(p);
-            if (minDist > currentDist) {
-                minDist = currentDist;
-                minIndex = currentIndex;
-            }
-            currentIndex++;
-        }
-
-        return minIndex;
-    }
+    
 
     public double manhattanDist(Pair<Double, Double> p) {
         if (p == null) throw new NullPointerException("Invalid Node");
@@ -79,4 +61,5 @@ public class Node {
 
         return Math.abs(x - coordinates.getElem1()) + Math.abs(y - getCoordinates().getElem2());
     }
+
 }

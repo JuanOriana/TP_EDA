@@ -31,65 +31,69 @@ public class Graph {
         int directionId=-1;
         int newRoute;
         int newDirection;
-        ArrayList<Node> lineNodes = new ArrayList<Node>();
+        HashSet<Node> lineNodes = new HashSet<>();
         reader.readNext();
+        Parsing.createParse();
         while((nextLine = reader.readNext()) != null) {
             newDirection=Integer.parseInt(nextLine[5]);
             newRoute= Integer.parseInt(nextLine[6]);
             if (newRoute!=routeId||newDirection!=directionId){
                 System.out.println("NUEVA LINEA: " + nextLine[8]);
                 loadLine(lineNodes,routeId,directionId);
-                lineNodes = new ArrayList<Node>();
+                lineNodes = new HashSet<>();
                 directionId=newDirection;
                 routeId=newRoute;
             }
-            lineNodes.add(new Node(nextLine[8],new Pair<Double,Double>(Double.parseDouble(nextLine[3]),Double.parseDouble(nextLine[4]))));
+            lineNodes.add(new Node(nextLine[8],new Pair<>(Double.parseDouble(nextLine[3]),Double.parseDouble(nextLine[4]))));
         }
     }
 
-    void loadLine(List<Node> lineNodes, int routeId, int directionId ){
+    void loadLine(Set<Node> lineNodes, int routeId, int directionId ){
         if (routeId < 0 || directionId < 0 || lineNodes.size() <= 0) return;
         ArrayList<Pair<Double, Double>> points = new ArrayList<>();
 
-        try {
-            points = Parsing.parseRoute(routeId, directionId);
-            if (points.size() <= 0) return;
-        } catch (IOException ex) {
-            System.err.println("Route ID :" + routeId + " or DirectionID: " + directionId);
+        Pair<Double,Double> startPoint = Parsing.parseRoute(routeId, directionId);
+        Node first = closestToPoint(startPoint,lineNodes);
+
+        nodes.add(first);
+        Node last = first;
+        lineNodes.remove(first);
+        Node toAdd;
+
+        while(!lineNodes.isEmpty()){
+            toAdd = closestToPoint(last.getCoordinates(),lineNodes);
+            nodes.add(toAdd);
+            lineNodes.remove(toAdd);
+
+            double dist = toAdd.manhattanDist(last.getCoordinates());
+
+            edges.putIfAbsent(toAdd, new ArrayList<>());
+            edges.get(toAdd).add(new Pair<>(last, dist));
+
+            edges.putIfAbsent(last, new ArrayList<>());
+            edges.get(last).add(new Pair<>(toAdd, dist));
         }
 
-        for (Node n : lineNodes) {
-            n.setStopNumber(n.closest(points));
-        }
-
-        Collections.sort(lineNodes, Comparator.comparing(Node::getStopNumber)); //O(N log N)
-
-
-
-        for (int i = 0; i < lineNodes.size()-1; i++) {
-            Node current = lineNodes.get(i);
-            Node next = lineNodes.get(i+1);
-            nodes.add(current);
-
-            double dist = current.manhattanDist(next.getCoordinates());
-
-            edges.putIfAbsent(current, new ArrayList<>());
-            edges.get(current).add(new Pair<>(next, dist));
-
-            edges.putIfAbsent(next, new ArrayList<>());
-            edges.get(next).add(new Pair<>(current, dist));
-        }
     }
 
     void printDijkstra(Node start, Node end){
     throw new UnsupportedOperationException();
     }
 
+    public Node closestToPoint (Pair<Double,Double> coord, Set<Node> set ){
+        double minDist = Double.MAX_VALUE;
+        Node closest = null;
+        for (Node node:set){
+            double dist = node.manhattanDist(coord);
+            if (dist<minDist){
+                closest=node;
+                minDist=dist;
+            }
+        }
+        return closest;
+    }
     public static void main(String[] args) throws IOException {
         Graph graph = new Graph();
         graph.setUp();
-        for (Node n : graph.nodes) {
-            System.out.println(n);
-        }
     }
 }
