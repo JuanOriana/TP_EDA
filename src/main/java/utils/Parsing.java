@@ -14,8 +14,13 @@ import java.util.Map;
 
 
 public class Parsing {
-	static Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
-	public static ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
+	Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
+
+	public Parsing() throws IOException {
+		createParse();
+	}
+
+	public ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = Parsing.class.getResourceAsStream(fileName);
@@ -37,7 +42,6 @@ public class Parsing {
 						start = i + 1;
 						Pair<Double,Double> coord = new Pair<>(lat,lng);
 						coordList.add(coord);
-						break;
 					}
 				}
 				break; //para que no siga recorriendo el csv una vez que ya encontro el recorrido que quiere
@@ -46,12 +50,11 @@ public class Parsing {
 		in.close();
 		return coordList;
 	}
-	public static Pair<Double,Double> parseRoute(int routeID, int directionID) throws IOException {
-		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
+	public Pair<Double,Double> parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
-	public static void createParse() throws IOException {
+	private void createParse() throws IOException {
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = Parsing.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);

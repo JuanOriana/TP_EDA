@@ -15,6 +15,7 @@ public class Graph {
     private HashMap<Node,Integer> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
+    private Parsing parse;
 
     void insert(Node node){
         throw new UnsupportedOperationException();
@@ -31,9 +32,9 @@ public class Graph {
         int directionId=-1;
         int newRoute;
         int newDirection;
+        parse = new Parsing();
         HashSet<Node> lineNodes = new HashSet<>();
         reader.readNext();
-        Parsing.createParse();
         while((nextLine = reader.readNext()) != null) {
             newDirection=Integer.parseInt(nextLine[5]);
             newRoute= Integer.parseInt(nextLine[6]);
@@ -53,7 +54,7 @@ public class Graph {
         if (routeId < 0 || directionId < 0 || lineNodes.size() <= 0) return;
         ArrayList<Pair<Double, Double>> points = new ArrayList<>();
 
-        Pair<Double,Double> startPoint = Parsing.parseRoute(routeId, directionId);
+        Pair<Double,Double> startPoint = parse.parseRoute(routeId, directionId);
         Node first = closestToPoint(startPoint,lineNodes);
 
         nodes.add(first);
@@ -79,7 +80,7 @@ public class Graph {
     }
 
     void printDijkstra(Node start, Node end){
-    throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public Node closestToPoint (Pair<Double,Double> coord, Set<Node> set ){
