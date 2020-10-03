@@ -72,6 +72,7 @@ public class Graph {
 
             edges.putIfAbsent(last, new ArrayList<>());
             edges.get(last).add(new Pair<>(toAdd, dist));
+            last=toAdd;
         }
 
     }
