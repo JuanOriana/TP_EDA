@@ -7,10 +7,19 @@ import java.util.Objects;
 public class Node {
     private String line;
     private Pair<Double,Double> coordinates;
+    private int stopNumber;
 
     public Node(String line, Pair<Double, Double> coordinates) {
         this.line = line;
         this.coordinates = coordinates;
+    }
+
+    public int getStopNumber() {
+        return stopNumber;
+    }
+
+    public void setStopNumber(int stopNumber) {
+        this.stopNumber = stopNumber;
     }
 
     public String getLine() {
@@ -54,7 +63,7 @@ public class Node {
         return minIndex;
     }
 
-    private double manhattanDist(Pair<Double, Double> p) {
+    public double manhattanDist(Pair<Double, Double> p) {
         if (p == null) throw new NullPointerException("Invalid Node");
         double x = p.getElem1();
         double y = p.getElem2();
