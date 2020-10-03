@@ -37,6 +37,7 @@ public class Parsing {
 						start = i + 1;
 						Pair<Double,Double> coord = new Pair<>(lat,lng);
 						coordList.add(coord);
+						break;
 					}
 				}
 				break; //para que no siga recorriendo el csv una vez que ya encontro el recorrido que quiere
@@ -45,10 +46,9 @@ public class Parsing {
 		in.close();
 		return coordList;
 	}
-	public static ArrayList<Pair<Double,Double>> parseRoute(int routeID, int directionID) throws IOException {
+	public static Pair<Double,Double> parseRoute(int routeID, int directionID) throws IOException {
 		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
-		coordList.add(parseMap.get(new Pair<>(routeID, directionID)));
-		return coordList;
+		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
 	public static void createParse() throws IOException {
