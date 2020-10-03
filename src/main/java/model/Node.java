@@ -44,6 +44,15 @@ public class Node {
         return Objects.hash(line, coordinates);
     }
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "line='" + line + '\'' +
+                ", coordinates=" + coordinates +
+                ", stopNumber=" + stopNumber +
+                '}';
+    }
+
     public int closest(List<Pair<Double, Double>> points) {
 
         if (points.size() < 1) throw new RuntimeException("Empty node list");

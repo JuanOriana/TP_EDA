@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Graph {
     private HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
-    private HashMap<Node, List<Pair<Node,Double>>> edges; //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
+    private HashMap<Node, List<Pair<Node,Double>>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
     private HashMap<Node,Integer> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
@@ -25,7 +25,7 @@ public class Graph {
     }
 
     void setUp() throws IOException {
-        CSVReader reader = new CSVReader(new FileReader("./resources/espacios-culturales.csv"));
+        CSVReader reader = new CSVReader(new FileReader("./src/main/resources/paradas-de-colectivo.csv"));
         String[] nextLine;
         int routeId=-1;
         int directionId=-1;
@@ -34,9 +34,10 @@ public class Graph {
         ArrayList<Node> lineNodes = new ArrayList<Node>();
         reader.readNext();
         while((nextLine = reader.readNext()) != null) {
-            newDirection=Integer.parseInt(nextLine[1]);
-            newRoute= Integer.parseInt(nextLine[2]);
+            newDirection=Integer.parseInt(nextLine[5]);
+            newRoute= Integer.parseInt(nextLine[6]);
             if (newRoute!=routeId||newDirection!=directionId){
+                System.out.println("NUEVA LINEA: " + nextLine[8]);
                 loadLine(lineNodes,routeId,directionId);
                 lineNodes = new ArrayList<Node>();
                 directionId=newDirection;
@@ -57,12 +58,13 @@ public class Graph {
             System.err.println("Route ID :" + routeId + " or DirectionID: " + directionId);
         }
 
-
         for (Node n : lineNodes) {
             n.setStopNumber(n.closest(points));
         }
 
         Collections.sort(lineNodes, Comparator.comparing(Node::getStopNumber)); //O(N log N)
+
+
 
         for (int i = 0; i < lineNodes.size()-1; i++) {
             Node current = lineNodes.get(i);
@@ -76,11 +78,18 @@ public class Graph {
 
             edges.putIfAbsent(next, new ArrayList<>());
             edges.get(next).add(new Pair<>(current, dist));
-
         }
     }
 
     void printDijkstra(Node start, Node end){
     throw new UnsupportedOperationException();
+    }
+
+    public static void main(String[] args) throws IOException {
+        Graph graph = new Graph();
+        graph.setUp();
+        for (Node n : graph.nodes) {
+            System.out.println(n);
+        }
     }
 }
