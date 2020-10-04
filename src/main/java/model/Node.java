@@ -6,14 +6,9 @@ import java.util.Objects;
 
 public class Node {
     private String line;
-    private MapPoint coordinates;
+    private Pair<Double,Double> coordinates;
 
     public Node(String line, Pair<Double, Double> coordinates) {
-        this.line = line;
-        this.coordinates = new MapPoint(coordinates.getElem1(), coordinates.getElem2());
-    }
-
-    public Node(String line, MapPoint coordinates) {
         this.line = line;
         this.coordinates = coordinates;
     }
@@ -22,7 +17,7 @@ public class Node {
         return line;
     }
 
-    public MapPoint getCoordinates() {
+    public Pair<Double, Double> getCoordinates() {
         return coordinates;
     }
 
@@ -49,16 +44,12 @@ public class Node {
     }
     
 
-    public double manhattanDist(MapPoint p) {
+    public double manhattanDist(Pair<Double, Double> p) {
         if (p == null) throw new NullPointerException("Invalid Node");
-        double x = p.getLat();
-        double y = p.getLong();
+        double x = p.getElem1();
+        double y = p.getElem2();
 
         return Math.abs(x - coordinates.getElem1()) + Math.abs(y - getCoordinates().getElem2());
-    }
-
-    public double manhattanDist(Node n) {
-        return manhattanDist(n.getCoordinates());
     }
 
 }

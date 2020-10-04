@@ -1,6 +1,5 @@
 package utils;
 
-import model.MapPoint;
 import model.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -14,21 +13,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Parsing {
-	Map<Pair<Integer, Integer>, MapPoint> parseMap = new HashMap<>();
+public class LineStartPoints {
+	Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
 
 	public LineStartPoints() throws IOException {
 		createParse();
 	}
 
-	public ArrayList<MapPoint> parseRoute1(int routeID, int directionID) throws IOException {
+	@Deprecated
+	public ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = LineStartPoints.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);
-		ArrayList<MapPoint> coordList = new ArrayList<>();
+		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
 		for (CSVRecord record : records) {
 			if (record.get("route_id").equals(String.valueOf(routeID)) && record.get("direction_id").equals(String.valueOf(directionID))){
 				String value = record.get("WKT");
@@ -41,7 +41,7 @@ public class Parsing {
 						lng=Double.parseDouble(value.substring(start,i));
 						i++; // hay un espacio despues de la coma
 						start = i + 1;
-						MapPoint coord = new MapPoint(lat,lng);
+						Pair<Double,Double> coord = new Pair<>(lat,lng);
 						coordList.add(coord);
 					}
 				}
@@ -51,7 +51,8 @@ public class Parsing {
 		in.close();
 		return coordList;
 	}
-	public MapPoint parseRoute(int routeID, int directionID){
+
+	public Pair<Double,Double> parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
@@ -68,8 +69,8 @@ public class Parsing {
 				if (value.charAt(i) == ' ') {
 					lng = value.substring(12,i);
 				}else if (value.charAt(i) == ',' || i == value.length() - 1) {
-					lng=value.substring(12 + lat.length(),i);
-					MapPoint coord = new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng));
+					lat=value.substring(12 + lng.length(),i);
+					Pair<Double,Double> coord = new Pair<>(Double.parseDouble(lat),Double.parseDouble(lng));
 					Pair<Integer, Integer> key = new Pair<>(Integer.parseInt(record.get("route_id")), Integer.parseInt(record.get("direction_id")));
 					parseMap.put(key,coord);
 					match = 1;
