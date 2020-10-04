@@ -13,17 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Parsing {
+public class LineStartPoints {
 	Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
 
-	public Parsing() throws IOException {
+	public LineStartPoints() throws IOException {
 		createParse();
 	}
 
+	@Deprecated
 	public ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
-		InputStream is = Parsing.class.getResourceAsStream(fileName);
+		InputStream is = LineStartPoints.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);
@@ -50,13 +51,14 @@ public class Parsing {
 		in.close();
 		return coordList;
 	}
+
 	public Pair<Double,Double> parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
 	private void createParse() throws IOException {
 		String fileName = "/recorrido-colectivos.csv";
-		InputStream is = Parsing.class.getResourceAsStream(fileName);
+		InputStream is = LineStartPoints.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);

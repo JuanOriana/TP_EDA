@@ -9,6 +9,11 @@ public class PlaceLocation {
   public PlaceLocation(String name) {
     this.name = name;
   }
+  public PlaceLocation(String name, double lat, double lng){
+    this.name=name;
+    this.lat=lat;
+    this.lng=lng;
+  }
 
   public double getLat() {
     return lat;

@@ -40,4 +40,12 @@ public class Pair<T1,T2>{
     public int hashCode() {
         return Objects.hash(elem1, elem2);
     }
+
+    @Override
+    public String toString() {
+        return "Pair{" +
+                "elem1=" + elem1 +
+                ", elem2=" + elem2 +
+                '}';
+    }
 }
