@@ -62,14 +62,14 @@ public class LineStartPoints {
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);
-		String lat = "", lng;
+		String lng = "", lat;
 		for (CSVRecord record : records) {
 			String value = record.get("WKT");
 			for (int i = 12, match = 0; i < value.length() && match==0; i++){
 				if (value.charAt(i) == ' ') {
-					lat = value.substring(12,i);
+					lng = value.substring(12,i);
 				}else if (value.charAt(i) == ',' || i == value.length() - 1) {
-					lng=value.substring(12 + lat.length(),i);
+					lat=value.substring(12 + lng.length(),i);
 					Pair<Double,Double> coord = new Pair<>(Double.parseDouble(lat),Double.parseDouble(lng));
 					Pair<Integer, Integer> key = new Pair<>(Integer.parseInt(record.get("route_id")), Integer.parseInt(record.get("direction_id")));
 					parseMap.put(key,coord);
