@@ -1,5 +1,6 @@
 package utils;
 
+import model.MapPoint;
 import model.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -14,20 +15,20 @@ import java.util.Map;
 
 
 public class Parsing {
-	Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
+	Map<Pair<Integer, Integer>, MapPoint> parseMap = new HashMap<>();
 
 	public Parsing() throws IOException {
 		createParse();
 	}
 
-	public ArrayList<Pair<Double,Double>> parseRoute1(int routeID, int directionID) throws IOException {
+	public ArrayList<MapPoint> parseRoute1(int routeID, int directionID) throws IOException {
 
 		String fileName = "/recorrido-colectivos.csv";
 		InputStream is = Parsing.class.getResourceAsStream(fileName);
 		Reader in = new InputStreamReader(is);
 		Iterable<CSVRecord> records = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(in);
-		ArrayList<Pair<Double,Double>> coordList = new ArrayList<>();
+		ArrayList<MapPoint> coordList = new ArrayList<>();
 		for (CSVRecord record : records) {
 			if (record.get("route_id").equals(String.valueOf(routeID)) && record.get("direction_id").equals(String.valueOf(directionID))){
 				String value = record.get("WKT");
@@ -40,7 +41,7 @@ public class Parsing {
 						lng=Double.parseDouble(value.substring(start,i));
 						i++; // hay un espacio despues de la coma
 						start = i + 1;
-						Pair<Double,Double> coord = new Pair<>(lat,lng);
+						MapPoint coord = new MapPoint(lat,lng);
 						coordList.add(coord);
 					}
 				}
@@ -50,7 +51,7 @@ public class Parsing {
 		in.close();
 		return coordList;
 	}
-	public Pair<Double,Double> parseRoute(int routeID, int directionID){
+	public MapPoint parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
@@ -68,7 +69,7 @@ public class Parsing {
 					lat = value.substring(12,i);
 				}else if (value.charAt(i) == ',' || i == value.length() - 1) {
 					lng=value.substring(12 + lat.length(),i);
-					Pair<Double,Double> coord = new Pair<>(Double.parseDouble(lat),Double.parseDouble(lng));
+					MapPoint coord = new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng));
 					Pair<Integer, Integer> key = new Pair<>(Integer.parseInt(record.get("route_id")), Integer.parseInt(record.get("direction_id")));
 					parseMap.put(key,coord);
 					match = 1;

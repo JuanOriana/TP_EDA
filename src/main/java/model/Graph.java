@@ -7,14 +7,13 @@ package model;
 import com.opencsv.CSVReader;
 import utils.Parsing;
 
-import javax.sound.midi.Soundbank;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
-    public HashMap<Node, Set<Pair<Node,Double>>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
+    public HashMap<Node, Set<Edge>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
     private HashMap<Node,Integer> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
@@ -57,7 +56,6 @@ public class Graph {
             newDirection=Integer.parseInt(nextLine[5]);
             newRoute= Integer.parseInt(nextLine[6]);
             if (newRoute!=routeId||newDirection!=directionId){
-                //System.out.println("NUEVA LINEA: " + nextLine[8]);
                 loadLine(lineNodes,routeId,directionId);
                 lineNodes = new HashSet<>();
                 directionId=newDirection;
@@ -71,9 +69,8 @@ public class Graph {
 
     void loadLine(Set<Node> lineNodes, int routeId, int directionId ){
         if (routeId < 0 || directionId < 0 || lineNodes.size() <= 0) return;
-        ArrayList<Pair<Double, Double>> points = new ArrayList<>();
 
-        Pair<Double,Double> startPoint = parse.parseRoute(routeId, directionId);
+        MapPoint startPoint = parse.parseRoute(routeId, directionId);
         Node first = closestToPoint(startPoint,lineNodes);
 
         addNode(first);
@@ -86,13 +83,9 @@ public class Graph {
             addNode(toAdd);
             lineNodes.remove(toAdd);
 
-            double dist = toAdd.manhattanDist(last.getCoordinates());
+            double dist = toAdd.manhattanDist(last);
 
-            edges.putIfAbsent(toAdd, new HashSet<>());
-            edges.get(toAdd).add(new Pair<>(last, dist*1000));
-
-            edges.putIfAbsent(last, new HashSet<>());
-            edges.get(last).add(new Pair<>(toAdd, dist*1000));
+            addEdge(last, toAdd, dist*1000);
             last=toAdd;
         }
     }
@@ -101,7 +94,7 @@ public class Graph {
         throw new UnsupportedOperationException();
     }
 
-    public Node closestToPoint (Pair<Double,Double> coord, Set<Node> set ){
+    public Node closestToPoint (MapPoint coord, Set<Node> set ){
         double minDist = Double.MAX_VALUE;
         Node closest = null;
         for (Node node:set){
@@ -131,13 +124,12 @@ public class Graph {
         return added;
     }
 
-    public boolean addEdge(Node n1, Node n2) {
+    public boolean addEdge(Node n1, Node n2, Double dist) {
         if (!nodes.contains(n1) || !nodes.contains(n2)) return false;
         edges.putIfAbsent(n1, new HashSet<>());
         edges.putIfAbsent(n2, new HashSet<>());
 
-        double dist = n1.manhattanDist(n2.getCoordinates());
-        return edges.get(n1).add(new Pair<>(n2, dist)) && edges.get(n2).add(new Pair<>(n1, dist));
+        return edges.get(n1).add(new Edge(n2, dist)) && edges.get(n2).add(new Edge(n1, dist));
     }
 
     private void connectLines() {
@@ -145,9 +137,9 @@ public class Graph {
         for (int i = 0; i < matrixSide; i++) {
             for (int j = 0; j < matrixSide; j++) {
                 count += connectNodes(i, j);
-                System.out.println("total = " + count);
             }
         }
+        System.out.println("total = " + count);
     }
 
     private int connectNodes(int y, int x) {
@@ -163,12 +155,13 @@ public class Graph {
                     if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide) {
                         for (Node neighbor : matrix[indexY][indexX]) {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
-                            if (n.manhattanDist(neighbor.getCoordinates()) <= walkDistance) {
+                            Double dist = n.manhattanDist(neighbor);
+                            if (dist <= walkDistance) {
+                                if (addEdge(n, neighbor, dist*1000))
                                 count++;
-                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
-                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
-                                System.out.println("############################################################");
-
+//                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
+//                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
+//                                System.out.println("############################################################");
                             }
                         }
                     }
