@@ -1,5 +1,6 @@
 import model.BusInPath;
-import model.PlaceLocation;
+import utils.textSearch.PlaceLocation;
+import utils.textSearch.TextAnalysis;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Controller {
     return Arrays.asList(new BusInPath("No implementado", 0, 0, 0, 0));
   }
 
-  public List<PlaceLocation> findPlaces(String searchTerm) {
-    return Arrays.asList(new PlaceLocation("No implementado"));
+  public List<PlaceLocation> findPlaces(String searchTerm, TextAnalysis textAnalysis) {
+    return textAnalysis.getSimilaritiesList(searchTerm);
   }
 }
