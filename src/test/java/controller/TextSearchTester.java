@@ -34,7 +34,7 @@ class TextSearchTester {
       assertEquals(place3.getName().substring(0, desiredInput3.length()),desiredInput3);
     }
     for (PlaceLocation place4 : testingTestAnalysis.getSimilaritiesList(input4)){
-      assertEquals(place4.getName().substring(0, desiredInput4.length()),desiredInput4);
+      assertTrue(place4.getName().contains(desiredInput4));
     }
     for (PlaceLocation place5 : testingTestAnalysis.getSimilaritiesList(input5)){
       assertEquals(place5.getName().substring(0, desiredInput5.length()),desiredInput5);

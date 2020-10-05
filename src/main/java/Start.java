@@ -2,6 +2,8 @@ import com.opencsv.CSVReader;
 import model.Graph;
 import model.Node;
 import model.Pair;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import utils.LineStartPoints;
 import utils.textSearch.TextAnalysis;
 
@@ -55,24 +57,29 @@ public class Start {
   }
 
   public static void setUp(Graph graph) throws IOException {
-    CSVReader reader = new CSVReader(new FileReader("./src/main/resources/paradas-de-colectivo.csv"));
-    String[] nextLine;
+    String fileName = "/paradas-de-colectivo.csv";
+
+    InputStream is = Start.class.getResourceAsStream(fileName );
+
+    Reader in = new InputStreamReader(is);
+    Iterable<CSVRecord> records = CSVFormat.DEFAULT
+            .withFirstRecordAsHeader()
+            .parse(in);
     int routeId=-1, directionId=-1, newRoute, newDirection;
     LineStartPoints startPoints = new LineStartPoints();
     HashSet<Node> lineNodes = new HashSet<>();
-    reader.readNext();
-    while((nextLine = reader.readNext()) != null) {
-      newDirection=Integer.parseInt(nextLine[5]);
-      newRoute= Integer.parseInt(nextLine[6]);
+    for (CSVRecord record : records){
+      newDirection=Integer.parseInt(record.get("direction_id"));
+      newRoute= Integer.parseInt(record.get("route_id"));
       // Una vez que cambie de linea, cambio la que llevo acumulada el el lineNodes buffer
       if (newRoute!=routeId||newDirection!=directionId){
-        System.out.println("NUEVA LINEA: " + nextLine[8]);
+        System.out.println("NUEVA LINEA: " + record.get("route_short_name"));
         loadLine(graph,lineNodes,routeId,directionId,startPoints);
         lineNodes = new HashSet<>();
         directionId=newDirection;
         routeId=newRoute;
       }
-      lineNodes.add(new Node(nextLine[8],new Pair<>(Double.parseDouble(nextLine[3]),Double.parseDouble(nextLine[4]))));
+      lineNodes.add(new Node(record.get("route_short_name"),new Pair<>(Double.parseDouble(record.get("stop_lat")),Double.parseDouble(record.get("stop_lon")))));
     }
     //Siempre queda una linea extra al final
     loadLine(graph,lineNodes,routeId,directionId,startPoints);
