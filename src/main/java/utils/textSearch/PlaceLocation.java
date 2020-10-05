@@ -1,16 +1,16 @@
 package utils.textSearch;
 
+import model.MapPoint;
+
 import java.util.Objects;
 
 public class PlaceLocation implements Comparable<PlaceLocation> {
 
-  private double lat;
-  private double lng;
+  private MapPoint coordinates;
   private String name;
 
   public PlaceLocation(double lat, double lng, String name) {
-    this.lat = lat;
-    this.lng = lng;
+    this.coordinates = new MapPoint(lat, lng);
     this.name = name;
   }
 
@@ -19,11 +19,11 @@ public class PlaceLocation implements Comparable<PlaceLocation> {
   }
 
   public double getLat() {
-    return lat;
+    return coordinates.getLat();
   }
 
   public double getLng() {
-    return lng;
+    return coordinates.getLong();
   }
 
   public String getName() {

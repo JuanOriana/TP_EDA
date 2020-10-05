@@ -1,7 +1,5 @@
 import com.opencsv.CSVReader;
-import model.Graph;
-import model.Node;
-import model.Pair;
+import model.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import utils.LineStartPoints;
@@ -59,7 +57,7 @@ public class Start {
   public static void setUp(Graph graph) throws IOException {
     String fileName = "/paradas-de-colectivo.csv";
 
-    InputStream is = Start.class.getResourceAsStream(fileName );
+    InputStream is = Start.class.getResourceAsStream(fileName);
 
     Reader in = new InputStreamReader(is);
     Iterable<CSVRecord> records = CSVFormat.DEFAULT
@@ -79,7 +77,7 @@ public class Start {
         directionId=newDirection;
         routeId=newRoute;
       }
-      lineNodes.add(new Node(record.get("route_short_name"),new Pair<>(Double.parseDouble(record.get("stop_lat")),Double.parseDouble(record.get("stop_lon")))));
+      lineNodes.add(new Node(record.get("route_short_name"),new MapPoint(Double.parseDouble(record.get("stop_lat")),Double.parseDouble(record.get("stop_lon")))));
     }
     //Siempre queda una linea extra al final
     loadLine(graph,lineNodes,routeId,directionId,startPoints);
@@ -88,7 +86,7 @@ public class Start {
   public static void loadLine(Graph graph,Set<Node> lineNodes, int routeId, int directionId, LineStartPoints startPoints ){
     if (routeId < 0 || directionId < 0 || lineNodes.size() <= 0) return;
     // Busco el primer punto del recorrido
-    Pair<Double,Double> startPoint = startPoints.parseRoute(routeId, directionId);
+    MapPoint startPoint = startPoints.parseRoute(routeId, directionId);
     Node last = Graph.closestToPoint(startPoint,lineNodes);
     if (last==null) return;
 
@@ -104,13 +102,12 @@ public class Start {
       graph.insertNode(toAdd);
       lineNodes.remove(toAdd);
 
-      double dist = toAdd.manhattanDist(last.getCoordinates());
+      double dist = toAdd.manhattanDist(last);
 
-      graph.insertEdge(toAdd,new Pair<>(last,dist*1000));
-      graph.insertEdge(last,new Pair<>(toAdd,dist*1000));
+      graph.insertEdge(toAdd,new Edge(last,dist*1000));
+      graph.insertEdge(last,new Edge(toAdd,dist*1000));
 
       last=toAdd;
     }
-
   }
 }

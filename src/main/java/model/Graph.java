@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
-    public HashMap<Node, List<Pair<Node,Double>>> edges = new HashMap<>(); //Potencialmente se puede implementar que cada nodo contenga sus vecinos tambien
+    public HashMap<Node, Set<Edge>> edges = new HashMap<>();
     private HashMap<Node,Integer> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
@@ -11,12 +11,12 @@ public class Graph {
     public void insertNode(Node node){
         nodes.add(node);
     }
-    public void insertEdge(Node root ,Pair<Node,Double> edge ){
-        edges.putIfAbsent(root,new ArrayList<>());
+    public void insertEdge(Node root ,Edge edge){
+        edges.putIfAbsent(root,new HashSet<>());
         edges.get(root).add(edge);
     }
 
-    Node findNearestPoint(Pair<Double,Double> coordinates){
+    Node findNearestPoint(MapPoint coordinates){
         throw new UnsupportedOperationException();
     }
 
@@ -26,8 +26,9 @@ public class Graph {
         throw new UnsupportedOperationException();
     }
 
+    //TODO chequear si esta funcion tiene que estar en Graph y no en Node
     //Dado un set de nodos y una coordenada espacial, encuentro el mas cercano
-    public static Node closestToPoint (Pair<Double,Double> coord, Set<Node> set ){
+    public static Node closestToPoint (MapPoint coord, Set<Node> set){
         if (set.isEmpty()) return null;
         double minDist = Double.MAX_VALUE;
         Node closest = null;
@@ -41,5 +42,6 @@ public class Graph {
         return closest;
     }
 
+    private class Cell extends HashSet<Node> {};
 
 }

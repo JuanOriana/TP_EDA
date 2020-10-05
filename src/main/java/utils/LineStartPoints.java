@@ -1,5 +1,6 @@
 package utils;
 
+import model.MapPoint;
 import model.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 
 public class LineStartPoints {
-	Map<Pair<Integer, Integer>, Pair<Double, Double>> parseMap = new HashMap<>();
+	Map<Pair<Integer, Integer>, MapPoint> parseMap = new HashMap<>();
 
 	public LineStartPoints() throws IOException {
 		createParse();
@@ -52,7 +53,7 @@ public class LineStartPoints {
 		return coordList;
 	}
 
-	public Pair<Double,Double> parseRoute(int routeID, int directionID){
+	public MapPoint parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
 	}
 
@@ -70,7 +71,7 @@ public class LineStartPoints {
 					lng = value.substring(12,i);
 				}else if (value.charAt(i) == ',' || i == value.length() - 1) {
 					lat=value.substring(12 + lng.length(),i);
-					Pair<Double,Double> coord = new Pair<>(Double.parseDouble(lat),Double.parseDouble(lng));
+					MapPoint coord = new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng));
 					Pair<Integer, Integer> key = new Pair<>(Integer.parseInt(record.get("route_id")), Integer.parseInt(record.get("direction_id")));
 					parseMap.put(key,coord);
 					match = 1;
