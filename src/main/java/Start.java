@@ -57,6 +57,10 @@ public class Start {
   public static void setUp(Graph graph) throws IOException {
     String fileName = "/paradas-de-colectivo.csv";
 
+    graph.setMinAndMaxLat((-35.182685 - 0.01), (-34.042402 + 0.01));
+    graph.setMinAndMaxLong((-59.82785 - 0.01), (-57.730346999999995 + 0.01));
+    graph.setWalkDistance(0.005);
+
     InputStream is = Start.class.getResourceAsStream(fileName);
 
     Reader in = new InputStreamReader(is);
@@ -81,6 +85,7 @@ public class Start {
     }
     //Siempre queda una linea extra al final
     loadLine(graph,lineNodes,routeId,directionId,startPoints);
+    graph.connectLines();
   }
 
   public static void loadLine(Graph graph,Set<Node> lineNodes, int routeId, int directionId, LineStartPoints startPoints ){
