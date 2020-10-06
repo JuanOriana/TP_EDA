@@ -4,7 +4,7 @@ import java.util.*;
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
     public HashMap<Node, Set<Edge>> edges = new HashMap<>();
-    private HashMap<Node,Double> distances;
+    private HashMap<Node,Double> distances = new HashMap<>();
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
 
@@ -71,8 +71,14 @@ public class Graph {
         if (!nodes.contains(start) || !nodes.contains(end))
             return;;
         settled = new HashSet<>();
-        unsettled = new PriorityQueue<>();
-        distances.replaceAll((k,v) -> v=Double.MAX_VALUE);
+        unsettled = new PriorityQueue<>(new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return Double.compare(distances.get(o1), distances.get(o2));
+            }
+        });
+        nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
+        //distances.replaceAll((k,v) -> v=Double.MAX_VALUE);
         distances.put(start,0.0);
         unsettled.add(start);
         while (!unsettled.isEmpty()){
