@@ -46,7 +46,16 @@ public class Graph {
         double diffLong = maxLong - minLong;
         int x = (int)(matrixSide*(coordinates.getLat() - minLat)/diffLat);
         int y = (int)(matrixSide*(coordinates.getLong() - minLong)/diffLong);
-        if (matrix[y][x] != null) nodes.addAll(matrix[y][x]);
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int indexX = x + j;
+                int indexY = y + i;
+                if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
+                    if (matrix[indexY][indexX] != null) nodes.addAll(matrix[indexY][indexX]);
+                }
+            }
+        }
 
         return closestToPoint(coordinates, nodes);
     }
