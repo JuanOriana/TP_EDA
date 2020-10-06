@@ -15,6 +15,7 @@ public class Graph {
     private int matrixSide = 300;
 
     private double walkDistance = 0;// = 0.005;
+    private static final double WALK_PENAL = 5;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -49,8 +50,6 @@ public class Graph {
 
         return closestToPoint(coordinates, nodes);
     }
-
-
 
     void printDijkstra(Node start, Node end){
         throw new UnsupportedOperationException();
@@ -97,7 +96,7 @@ public class Graph {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
                             Double dist = n.manhattanDist(neighbor);
                             if (dist <= walkDistance) {
-                                if (insertEdge(n, new Edge(neighbor, dist*1000)));
+                                if (insertEdge(n, new Edge(neighbor, WALK_PENAL*dist*1000)));
                                     count++;
 //                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
 //                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());

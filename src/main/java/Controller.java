@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
-  TextAnalysis textAnalysis;
+  private TextAnalysis textAnalysis;
+  private final static int SIMIL_AMOUNT = 10;
 
   public Controller() throws IOException {
     textAnalysis = new TextAnalysis();
@@ -18,7 +19,7 @@ public class Controller {
   }
 
   public List<PlaceLocation> findPlaces(String searchTerm) {
-    return textAnalysis.getSimilaritiesList(searchTerm);
+    return textAnalysis.getSimilaritiesList(searchTerm,SIMIL_AMOUNT);
   }
 
 }

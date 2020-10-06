@@ -6,14 +6,12 @@ import java.util.Objects;
 
 public class PlaceLocation implements Comparable<PlaceLocation> {
 
-  //private MapPoint coordinates;
   private double lng;
   private double lat;
   private String name;
   private int id;
 
   public PlaceLocation(double lat, double lng, String name,int id) {
-    //this.coordinates = new MapPoint(lat, lng);
     this.lat = lat;
     this.lng = lng;
     this.name = name;
