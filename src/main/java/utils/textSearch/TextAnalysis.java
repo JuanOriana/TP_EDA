@@ -30,10 +30,11 @@ public class TextAnalysis {
 
         for (CSVRecord record : records) {
             String value = record.get("establecimiento");
+            //String barrio = record.get("barrio");
             double lng = Double.parseDouble(record.get("longitud"));
             double lat = Double.parseDouble(record.get("latitud"));
             int id = Integer.parseInt(record.get("id"));
-            referenceMap.putIfAbsent(id, new PlaceLocation(lat,lng,value));
+            referenceMap.putIfAbsent(id, new PlaceLocation(lat,lng,value,id));
             for (String string: new QGram(3).createToken(value).keySet()){
                 tokenMap.putIfAbsent(string, new HashSet<>());
                 tokenMap.get(string).add(id);
@@ -50,15 +51,13 @@ public class TextAnalysis {
             if (!tokenMap.containsKey(qGrams)) continue;
             for (Integer id: tokenMap.get(qGrams)) {
                 placeLocationMap.putIfAbsent(id, 0);
-                if (placeLocationTree.containsKey(placeLocationMap.get(id))) placeLocationTree.get(placeLocationMap.get(id)).remove(id); //remuevo del tree antes de incrementar las reps
-                placeLocationMap.put(id, placeLocationMap.get(id) + 1);
-                placeLocationTree.putIfAbsent(placeLocationMap.get(id), new ArrayList<>());
-                placeLocationTree.get(placeLocationMap.get(id)).add(id); //lo agrego al mapa con las reps incrementadas
+                placeLocationMap.put(id, placeLocationMap.get(id) + 1); //agrego una rep
+                removeFromTree(placeLocationTree,placeLocationMap.get(id)-1,id); //remuevo del tree en el estado previo (antes de agregar una rep)
+                addToTree(placeLocationTree,placeLocationMap.get(id),id); //lo agrego al mapa con las reps incrementadas
             }
         }
 
         List<PlaceLocation> result = new ArrayList<>();
-
         for (Integer reps : placeLocationTree.keySet()){
             for (Integer id : placeLocationTree.get(reps)){
                 result.add(referenceMap.get(id));
@@ -78,6 +77,14 @@ public class TextAnalysis {
         }
         */
         return result;
+    }
+    private void removeFromTree(TreeMap<Integer,ArrayList<Integer>> placeLocationTree,Integer key, Integer id){
+        if (placeLocationTree.containsKey(key)) placeLocationTree.get(key).remove(id);
+        //if (placeLocationTree.get(key).size()==0) placeLocationTree.remove(key);
+    }
+    private void addToTree(TreeMap<Integer,ArrayList<Integer>> placeLocationTree,Integer key, Integer id){
+        placeLocationTree.putIfAbsent(key, new ArrayList<>());
+        placeLocationTree.get(key).add(id);
     }
 
 }
