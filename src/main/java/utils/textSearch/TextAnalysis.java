@@ -10,13 +10,13 @@ import java.io.Reader;
 import java.util.*;
 
 public class TextAnalysis {
-    HashMap<String, ArrayList<Integer>> list;
+    HashMap<String, Set<Integer>> tokenMap;
     HashMap<Integer, PlaceLocation> referenceMap;
     public TextAnalysis() throws IOException {
         preProcesamiento();
     }
     private void preProcesamiento() throws IOException {
-        list = new HashMap<>();
+        tokenMap = new HashMap<>();
         referenceMap = new HashMap<>();
         String fileName = "/espacios-culturales.csv";
 
@@ -32,10 +32,10 @@ public class TextAnalysis {
             double lng = Double.parseDouble(record.get("longitud"));
             double lat = Double.parseDouble(record.get("latitud"));
             int id = Integer.parseInt(record.get("id"));
+            referenceMap.putIfAbsent(id, new PlaceLocation(lat,lng,value));
             for (String string: new QGram(3).createToken(value).keySet()){
-                list.putIfAbsent(string, new ArrayList<>());
-                referenceMap.putIfAbsent(id, new PlaceLocation(lat,lng,value));
-                if (!list.get(string).contains(id)) list.get(string).add(id);
+                tokenMap.putIfAbsent(string, new HashSet<>());
+                tokenMap.get(string).add(id);
             }
         }
         in.close();
@@ -46,12 +46,10 @@ public class TextAnalysis {
         HashMap<Integer, Integer> placeLocationMap = new HashMap<>();
 
         for (String qGrams: new QGram(3).createToken(searchTerm).keySet()) {
-            if (!list.containsKey(qGrams)) continue;
-            for (Integer id: list.get(qGrams)){
-                if (placeLocationMap.containsKey(id)){
-                    placeLocationMap.put(id, placeLocationMap.get(id)+1);
-                }
+            if (!tokenMap.containsKey(qGrams)) continue;
+            for (Integer id: tokenMap.get(qGrams)) {
                 placeLocationMap.putIfAbsent(id, 0);
+                placeLocationMap.put(id, placeLocationMap.get(id) + 1);
             }
         }
         TreeSet<PlaceReps> treeReps = new TreeSet<>();
