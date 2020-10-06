@@ -52,6 +52,8 @@ public class Graph {
     }
 
     void printDijkstra(Node start, Node end){
+        if (!nodes.contains(start) || !nodes.contains(end))
+            return;;
         settled = new HashSet<>();
         unsettled = new PriorityQueue<>();
         distances.replaceAll((k,v) -> v=Double.MAX_VALUE);
@@ -62,6 +64,8 @@ public class Graph {
             if (settled.contains(node)) continue;
             settled.add(node);
             System.out.println(node.getLine() + ": " + distances.get(node));
+            if (node.equals(end))
+                return;
 
             for (Edge edge : edges.get(node)) {
                 double targetNodeCost = distances.get(node) + edge.getDist();
