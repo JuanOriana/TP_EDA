@@ -9,6 +9,10 @@ public class Edge {
         this.dist = dist;
     }
 
+    public Double getDist() {
+        return dist;
+    }
+
     public Node getTarget() {
         return target;
     }

@@ -4,7 +4,7 @@ import java.util.*;
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
     public HashMap<Node, Set<Edge>> edges = new HashMap<>();
-    private HashMap<Node,Integer> distances;
+    private HashMap<Node,Double> distances;
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
 
@@ -43,7 +43,25 @@ public class Graph {
     }
 
     void printDijkstra(Node start, Node end){
-        throw new UnsupportedOperationException();
+        settled = new HashSet<>();
+        unsettled = new PriorityQueue<>();
+        distances.replaceAll((k,v) -> v=Double.MAX_VALUE);
+        distances.put(start,0.0);
+        unsettled.add(start);
+        while (!unsettled.isEmpty()){
+            Node node = unsettled.remove();
+            if (settled.contains(node)) continue;
+            settled.add(node);
+            System.out.println(node.getLine() + ": " + distances.get(node));
+
+            for (Edge edge : edges.get(node)) {
+                double targetNodeCost = distances.get(node) + edge.getDist();
+                if (targetNodeCost < distances.get(edge.getTarget())) {
+                    distances.put(edge.getTarget(),targetNodeCost);
+                    unsettled.add(edge.getTarget());
+                }
+            }
+        }
     }
 
     //TODO chequear si esta funcion tiene que estar en Graph y no en Node
