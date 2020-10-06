@@ -50,13 +50,15 @@ public class TextAnalysis {
             if (!tokenMap.containsKey(qGrams)) continue;
             for (Integer id: tokenMap.get(qGrams)) {
                 placeLocationMap.putIfAbsent(id, 0);
-                if (placeLocationTree.containsKey(placeLocationMap.get(id)) && placeLocationTree.get(placeLocationMap.get(id)).contains(id)) placeLocationTree.get(placeLocationMap.get(id)).remove(id); //remuevo del tree antes de incrementar las reps
+                if (placeLocationTree.containsKey(placeLocationMap.get(id))) placeLocationTree.get(placeLocationMap.get(id)).remove(id); //remuevo del tree antes de incrementar las reps
                 placeLocationMap.put(id, placeLocationMap.get(id) + 1);
                 placeLocationTree.putIfAbsent(placeLocationMap.get(id), new ArrayList<>());
                 placeLocationTree.get(placeLocationMap.get(id)).add(id); //lo agrego al mapa con las reps incrementadas
             }
         }
+
         List<PlaceLocation> result = new ArrayList<>();
+
         for (Integer reps : placeLocationTree.keySet()){
             for (Integer id : placeLocationTree.get(reps)){
                 result.add(referenceMap.get(id));
@@ -64,7 +66,17 @@ public class TextAnalysis {
             }
             if (result.size()==10) break; //omega yuck!!
         }
-
+        /* opcion B - sin breaks
+        Iterator<Integer> treeIt = placeLocationTree.navigableKeySet().iterator();
+        while (treeIt.hasNext() && result.size()<10){
+            Iterator<Integer> subIt = placeLocationTree.get(treeIt.next()).iterator();
+            while (subIt.hasNext() && result.size()<10) {
+                PlaceLocation loc = referenceMap.get(subIt.next());
+                System.out.println(loc);
+                result.add(loc);
+            }
+        }
+        */
         return result;
     }
 
