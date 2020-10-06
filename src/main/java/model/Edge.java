@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Edge {
     public Double dist;
     private Node target;
@@ -16,4 +18,13 @@ public class Edge {
     public Node getTarget() {
         return target;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Edge)) return false;
+        Edge edge = (Edge) o;
+        return Objects.equals(target, edge.target);
+    }
+
 }

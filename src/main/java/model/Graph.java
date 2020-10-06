@@ -4,7 +4,7 @@ import java.util.*;
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
     public HashMap<Node, Set<Edge>> edges = new HashMap<>();
-    private HashMap<Node,Double> distances = new HashMap<>();
+    private HashMap<Node, Double> distances = new HashMap<>();
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
 
@@ -19,43 +19,51 @@ public class Graph {
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
-    public void insertNode(Node node){
-        boolean added = nodes.add(node);
-        if (added) {
-            double diffLat = maxLat - minLat;
-            double diffLong = maxLong - minLong;
-            int x = (int)(matrixSide*(node.getCoordinates().getElem1() - minLat)/diffLat);
-            int y = (int)(matrixSide*(node.getCoordinates().getElem2() - minLong)/diffLong);
-            if (matrix[y][x] == null) matrix[y][x] = new Cell();
-            matrix[y][x].add(node);
+    public boolean insertNode(Node node) {
+        boolean added = false;//= nodes.add(node);
+        //if (added) {
+        Pair<Integer, Integer> matrixCoords = getMatrixCoords(node.getCoordinates());
+        int x = matrixCoords.getElem1();
+        int y = matrixCoords.getElem2();
+        if (x < 0 || x >= matrixSide || y < 0 || y >= matrixSide) {
+            return added;
         }
+        nodes.add(node);
+        if (matrix[y][x] == null) matrix[y][x] = new Cell();
+        added = matrix[y][x].add(node);
+        return added;
+        //}
 
     }
-    public boolean insertEdge(Node root ,Edge edge){
+
+    public boolean insertEdge(Node root, Edge edge) {
         if (!nodes.contains(root) || !nodes.contains(edge.getTarget())) return false;
 
-        edges.putIfAbsent(root,new HashSet<>());
+        edges.putIfAbsent(root, new HashSet<>());
         return edges.get(root).add(edge);
     }
 
-    public void findPath(MapPoint p1, MapPoint p2) {
-        Node n1 = findNearestPoint(p1);
-        Node n2 = findNearestPoint(p2);
-
-        if (n1 == null) System.out.println("NO ENCONTRO SALIDA");
-        if (n2 == null) System.out.println("NO ENCONTRO DESTINO");
-
-        if (n1 != null && n2 != null) printDijkstra(n1, n2);
+    public void findPath(MapPoint start, MapPoint target) {
+        Node n1 = new Node("START", start);
+        Node n2 = new Node("END", target);
+        if (insertNode(n1) && insertNode(n2)) {
+            Pair<Integer, Integer> startCoords = getMatrixCoords(start);
+            Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
+            connectNodes(startCoords.getElem2(), startCoords.getElem1());
+            connectNodes(targetCoords.getElem2(), targetCoords.getElem1());
+            printDijkstra(n1, n2);
+            removeNode(n1);
+            removeNode(n2);
+        } else System.out.println("could not insert point");
     }
 
-    public Node findNearestPoint(MapPoint coordinates){
+    public Node findNearestPoint(MapPoint coordinates) {
 
         HashSet<Node> nodes = new HashSet<>();
 
-        double diffLat = maxLat - minLat;
-        double diffLong = maxLong - minLong;
-        int x = (int)(matrixSide*(coordinates.getLat() - minLat)/diffLat);
-        int y = (int)(matrixSide*(coordinates.getLong() - minLong)/diffLong);
+        Pair<Integer, Integer> matrixCoords = getMatrixCoords(coordinates);
+        int x = matrixCoords.getElem1();
+        int y = matrixCoords.getElem2();
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -70,10 +78,13 @@ public class Graph {
         return closestToPoint(coordinates, nodes);
     }
 
-    void printDijkstra(Node start, Node end){
+    void printDijkstra(Node start, Node end) {
         boolean found = false;
-        if (!nodes.contains(start) || !nodes.contains(end))
-            return;;
+        if (!nodes.contains(start) || !nodes.contains(end)) {
+            System.out.println("no encontre los nodos xd ahs sido trolleado");
+            return;
+        }
+
         settled = new HashSet<>();
         unsettled = new PriorityQueue<>(new Comparator<Node>() {
             @Override
@@ -82,10 +93,10 @@ public class Graph {
             }
         });
         nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
-        distances.put(start,0.0);
+        distances.put(start, 0.0);
         unsettled.add(start);
         Node node = null;
-        while (!unsettled.isEmpty()){
+        while (!unsettled.isEmpty()) {
             node = unsettled.remove();
             if (distances.get(node) == Double.MAX_VALUE) break;
             if (settled.contains(node)) continue;
@@ -95,17 +106,20 @@ public class Graph {
                 found = true;
                 break;
             }
-
+            //null pointer
+            if (edges.get(node)==null) System.out.println(node.getLine());
             for (Edge edge : edges.get(node)) {
+                if (!unsettled.contains(edge.getTarget())) continue;
+                System.out.println(edge);
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
-                    distances.put(edge.getTarget(),targetNodeCost);
+                    distances.put(edge.getTarget(), targetNodeCost);
                     unsettled.add(edge.getTarget());
                 }
             }
         }
-
         if (found) {
+            System.out.println("found");
             System.out.println(node.getLine());
             while (node != null && !node.equals(start)) {
                 double dist = Double.POSITIVE_INFINITY;
@@ -119,20 +133,22 @@ public class Graph {
                 System.out.println(node.getLine());
                 node = next;
             }
+        }else {
+            System.out.println("not found :(");
         }
     }
 
     //TODO chequear si esta funcion tiene que estar en Graph y no en Node
     //Dado un set de nodos y una coordenada espacial, encuentro el mas cercano
-    public static Node closestToPoint (MapPoint coord, Set<Node> set){
+    public static Node closestToPoint(MapPoint coord, Set<Node> set) {
         if (set.isEmpty()) return null;
         double minDist = Double.MAX_VALUE;
         Node closest = null;
-        for (Node node:set){
+        for (Node node : set) {
             double dist = node.manhattanDist(coord);
-            if (dist<minDist){
-                closest=node;
-                minDist=dist;
+            if (dist < minDist) {
+                closest = node;
+                minDist = dist;
             }
         }
         return closest;
@@ -148,7 +164,7 @@ public class Graph {
         System.out.println("total = " + count);
     }
 
-    private int connectNodes(int y, int x) {
+    private int connectNodes(int y, int x) { //recibe primero la longitud y luego la latitud -> fue pedro :-D
 
         int count = 0;
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
@@ -163,8 +179,8 @@ public class Graph {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
                             Double dist = n.manhattanDist(neighbor);
                             if (dist <= walkDistance) {
-                                if (insertEdge(n, new Edge(neighbor, WALK_PENAL*dist*1000)));
-                                    count++;
+                                if (insertEdge(n, new Edge(neighbor, WALK_PENAL * dist * 1000))) ;
+                                count++;
 //                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
 //                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
 //                                System.out.println("############################################################");
@@ -191,6 +207,36 @@ public class Graph {
         this.minLong = minLong;
         this.maxLong = maxLong;
     }
-    private class Cell extends HashSet<Node> {};
 
+    private class Cell extends HashSet<Node> {
+    }
+
+    ;
+
+    private Pair<Integer, Integer> getMatrixCoords(MapPoint coordinates) {
+        double diffLat = maxLat - minLat;
+        double diffLong = maxLong - minLong;
+        return new Pair<Integer, Integer>((int) (matrixSide * (coordinates.getLat() - minLat) / diffLat), (int) (matrixSide * (coordinates.getLong() - minLong) / diffLong));
+    }
+
+    private boolean removeNode(Node node) {
+        if (!nodes.contains(node)) return false;
+        edges.remove(node);
+        nodes.remove(node);
+        Pair<Integer, Integer> nodeCoords = getMatrixCoords(node.getCoordinates());
+        int x = nodeCoords.getElem1();
+        int y = nodeCoords.getElem2();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int indexX = x + j;
+                int indexY = y + i;
+                if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
+                  for (Node neighbour: matrix[indexY][indexX]){
+                      edges.get(neighbour).remove(new Edge(node, 0.0));
+                  }
+                }
+            }
+        }
+        return true;
+    }
 }
