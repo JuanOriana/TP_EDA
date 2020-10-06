@@ -43,7 +43,7 @@ public class TextAnalysis {
         in.close();
     }
 
-    public List<PlaceLocation> getSimilaritiesList (String searchTerm){
+    public List<PlaceLocation> getSimilaritiesList (String searchTerm, int similAmount){
         searchTerm=searchTerm.toUpperCase();
         HashMap<Integer, Integer> placeLocationMap = new HashMap<>();
         TreeMap<Integer,ArrayList<Integer>> placeLocationTree = new TreeMap<>(Comparator.reverseOrder());
@@ -61,9 +61,9 @@ public class TextAnalysis {
         for (Integer reps : placeLocationTree.keySet()){
             for (Integer id : placeLocationTree.get(reps)){
                 result.add(referenceMap.get(id));
-                if (result.size()==10) break; //yuck!!
+                if (result.size()==similAmount) break; //yuck!!
             }
-            if (result.size()==10) break; //omega yuck!!
+            if (result.size()==similAmount) break; //omega yuck!!
         }
         /* opcion B - sin breaks
         Iterator<Integer> treeIt = placeLocationTree.navigableKeySet().iterator();

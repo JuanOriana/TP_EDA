@@ -24,34 +24,34 @@ class TextSearchTester {
     String input9 = "parqe", desiredInput9 = "PARQUE";
     String input10 = "teattro", desiredInput10 = "TEATRO";
 
-    for (PlaceLocation place1 : testingTestAnalysis.getSimilaritiesList(input1)){
+    for (PlaceLocation place1 : testingTestAnalysis.getSimilaritiesList(input1,10)){
       assertEquals(place1.getName().substring(0,desiredInput1.length()), desiredInput1);
     }
-    for (PlaceLocation place2 : testingTestAnalysis.getSimilaritiesList(input2)){
+    for (PlaceLocation place2 : testingTestAnalysis.getSimilaritiesList(input2,10)){
       assertEquals(place2.getName().substring(0, desiredInput2.length()),desiredInput2);
     }
-    for (PlaceLocation place3 : testingTestAnalysis.getSimilaritiesList(input3)){
+    for (PlaceLocation place3 : testingTestAnalysis.getSimilaritiesList(input3,10)){
       assertEquals(place3.getName().substring(0, desiredInput3.length()),desiredInput3);
     }
-    for (PlaceLocation place4 : testingTestAnalysis.getSimilaritiesList(input4)){
+    for (PlaceLocation place4 : testingTestAnalysis.getSimilaritiesList(input4,10)){
       assertTrue(place4.getName().contains(desiredInput4));
     }
-    for (PlaceLocation place5 : testingTestAnalysis.getSimilaritiesList(input5)){
+    for (PlaceLocation place5 : testingTestAnalysis.getSimilaritiesList(input5,10)){
       assertEquals(place5.getName().substring(0, desiredInput5.length()),desiredInput5);
     }
-    for (PlaceLocation place6 : testingTestAnalysis.getSimilaritiesList(input6)){
+    for (PlaceLocation place6 : testingTestAnalysis.getSimilaritiesList(input6,10)){
       assertTrue(place6.getName().contains(desiredInput6));
     }
-    for (PlaceLocation place7 : testingTestAnalysis.getSimilaritiesList(input7)){
+    for (PlaceLocation place7 : testingTestAnalysis.getSimilaritiesList(input7,10)){
       assertTrue(place7.getName().contains(desiredInput7));
     }
-    for (PlaceLocation place8 : testingTestAnalysis.getSimilaritiesList(input8)){
+    for (PlaceLocation place8 : testingTestAnalysis.getSimilaritiesList(input8,10)){
       assertTrue(place8.getName().contains(desiredInput8));
     }
-    for (PlaceLocation place9 : testingTestAnalysis.getSimilaritiesList(input9)){
+    for (PlaceLocation place9 : testingTestAnalysis.getSimilaritiesList(input9,10)){
       assertTrue(place9.getName().contains(desiredInput9));
     }
-    for (PlaceLocation place10 : testingTestAnalysis.getSimilaritiesList(input10)){
+    for (PlaceLocation place10 : testingTestAnalysis.getSimilaritiesList(input10,10)){
       assertTrue(place10.getName().contains(desiredInput10));
     }
   }
@@ -71,16 +71,16 @@ class TextSearchTester {
     String input9 = "asosiasion dante aliguieri", desiredInput9 = "ASOCIACION DANTE ALIGHIERI";
     String input10 = "museo bque coreta uruguay", desiredInput10 = "BUQUE MUSEO ARA CORBETA URUGUAY";
 
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input1).contains(new PlaceLocation(desiredInput1)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input2).contains(new PlaceLocation(desiredInput2)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input3).contains(new PlaceLocation(desiredInput3)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input4).contains(new PlaceLocation(desiredInput4)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input5).contains(new PlaceLocation(desiredInput5)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input6).contains(new PlaceLocation(desiredInput6)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input7).contains(new PlaceLocation(desiredInput7)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input8).contains(new PlaceLocation(desiredInput8)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input9).contains(new PlaceLocation(desiredInput9)));
-    assertTrue(testingTestAnalysis.getSimilaritiesList(input10).contains(new PlaceLocation(desiredInput10)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input1,10).contains(new PlaceLocation(desiredInput1)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input2,10).contains(new PlaceLocation(desiredInput2)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input3,10).contains(new PlaceLocation(desiredInput3)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input4,10).contains(new PlaceLocation(desiredInput4)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input5,10).contains(new PlaceLocation(desiredInput5)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input6,10).contains(new PlaceLocation(desiredInput6)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input7,10).contains(new PlaceLocation(desiredInput7)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input8,10).contains(new PlaceLocation(desiredInput8)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input9,10).contains(new PlaceLocation(desiredInput9)));
+    assertTrue(testingTestAnalysis.getSimilaritiesList(input10,10).contains(new PlaceLocation(desiredInput10)));
 
 
   }
