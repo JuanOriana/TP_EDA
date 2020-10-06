@@ -8,8 +8,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
-
 public class TextAnalysis {
+    private final static int QGRAM_LENGTH = 3;
+
     HashMap<String, Set<Integer>> tokenMap;
     HashMap<Integer, PlaceLocation> referenceMap;
 
@@ -35,7 +36,7 @@ public class TextAnalysis {
             double lat = Double.parseDouble(record.get("latitud"));
             int id = Integer.parseInt(record.get("id"));
             referenceMap.putIfAbsent(id, new PlaceLocation(lat,lng,value,id));
-            for (String string: new QGram(3).createToken(value).keySet()){
+            for (String string: new QGram(QGRAM_LENGTH).createToken(value).keySet()){
                 tokenMap.putIfAbsent(string, new HashSet<>());
                 tokenMap.get(string).add(id);
             }
@@ -47,11 +48,11 @@ public class TextAnalysis {
         searchTerm=searchTerm.toUpperCase();
         HashMap<Integer, Integer> placeLocationMap = new HashMap<>();
         TreeMap<Integer,ArrayList<Integer>> placeLocationTree = new TreeMap<>(Comparator.reverseOrder());
-        for (String qGrams: new QGram(3).createToken(searchTerm).keySet()) {
+        for (String qGrams: new QGram(QGRAM_LENGTH).createToken(searchTerm).keySet()) {
             if (!tokenMap.containsKey(qGrams)) continue;
             for (Integer id: tokenMap.get(qGrams)) {
                 placeLocationMap.putIfAbsent(id, 0);
-                placeLocationMap.put(id, placeLocationMap.get(id) + 1); //agrego una rep
+                placeLocationMap.put(id, placeLocationMap.get(id) + 1);
                 removeFromTree(placeLocationTree,placeLocationMap.get(id)-1,id); //remuevo del tree en el estado previo (antes de agregar una rep)
                 addToTree(placeLocationTree,placeLocationMap.get(id),id); //lo agrego al mapa con las reps incrementadas
             }
@@ -63,19 +64,8 @@ public class TextAnalysis {
                 result.add(referenceMap.get(id));
                 if (result.size()==similAmount) break; //yuck!!
             }
-            if (result.size()==similAmount) break; //omega yuck!!
+            if (result.size()==similAmount) break; //WHACK!!
         }
-        /* opcion B - sin breaks
-        Iterator<Integer> treeIt = placeLocationTree.navigableKeySet().iterator();
-        while (treeIt.hasNext() && result.size()<10){
-            Iterator<Integer> subIt = placeLocationTree.get(treeIt.next()).iterator();
-            while (subIt.hasNext() && result.size()<10) {
-                PlaceLocation loc = referenceMap.get(subIt.next());
-                System.out.println(loc);
-                result.add(loc);
-            }
-        }
-        */
         return result;
     }
     private void removeFromTree(TreeMap<Integer,ArrayList<Integer>> placeLocationTree,Integer key, Integer id){
@@ -87,27 +77,4 @@ public class TextAnalysis {
         placeLocationTree.get(key).add(id);
     }
 
-}
-
-@Deprecated
-class PlaceReps implements Comparable<PlaceReps> {
-
-    private final Integer id;
-    private final int repetitions;
-
-    public PlaceReps(Integer id, int repetitions) {
-        this.id = id;
-        this.repetitions = repetitions;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public int compareTo(PlaceReps placeReps) {
-        int cmp = Integer.compare(placeReps.repetitions, this.repetitions);
-        if (cmp == 0) cmp = Integer.compare(this.id, placeReps.id);
-        return cmp;
-    }
 }
