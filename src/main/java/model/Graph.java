@@ -37,8 +37,17 @@ public class Graph {
         return edges.get(root).add(edge);
     }
 
-    Node findNearestPoint(MapPoint coordinates){
-        throw new UnsupportedOperationException();
+    public Node findNearestPoint(MapPoint coordinates){
+
+        HashSet<Node> nodes = new HashSet<>();
+
+        double diffLat = maxLat - minLat;
+        double diffLong = maxLong - minLong;
+        int x = (int)(matrixSide*(coordinates.getLat() - minLat)/diffLat);
+        int y = (int)(matrixSide*(coordinates.getLong() - minLong)/diffLong);
+        if (matrix[y][x] != null) nodes.addAll(matrix[y][x]);
+
+        return closestToPoint(coordinates, nodes);
     }
 
 

@@ -25,6 +25,13 @@ public class Start {
       double fromLng = Double.parseDouble(req.queryParams("fromLng"));
       double toLat = Double.parseDouble(req.queryParams("toLat"));
       double toLng = Double.parseDouble(req.queryParams("toLng"));
+
+      Node start = graph.findNearestPoint(new MapPoint(fromLat, fromLng));
+      Node end = graph.findNearestPoint(new MapPoint(toLat, toLng));
+
+      System.out.println("start = " + start);
+      System.out.println("target = " + end);
+
       return controller.findPath(fromLat, fromLng, toLat, toLng);
     }, json());
     get("/place", (req, res) -> {
