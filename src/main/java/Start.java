@@ -29,8 +29,7 @@ public class Start {
       Node start = graph.findNearestPoint(new MapPoint(fromLat, fromLng));
       Node end = graph.findNearestPoint(new MapPoint(toLat, toLng));
 
-      System.out.println("start = " + start);
-      System.out.println("target = " + end);
+      graph.findPath(new MapPoint(fromLat, fromLng), new MapPoint(toLat, toLng));
 
       return controller.findPath(fromLat, fromLng, toLat, toLng);
     }, json());

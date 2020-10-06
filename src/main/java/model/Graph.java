@@ -38,6 +38,13 @@ public class Graph {
         return edges.get(root).add(edge);
     }
 
+    public void findPath(MapPoint p1, MapPoint p2) {
+        Node n1 = findNearestPoint(p1);
+        Node n2 = findNearestPoint(p2);
+
+        if (n1 != null && n2 != null) printDijkstra(n1, n2);
+    }
+
     public Node findNearestPoint(MapPoint coordinates){
 
         HashSet<Node> nodes = new HashSet<>();
