@@ -15,7 +15,7 @@ public class Graph {
     private int matrixSide = 300;
 
     private double walkDistance = 0;// = 0.005;
-    private static final double WALK_PENAL = 5;
+    private static final double WALK_PENAL = 10;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -41,6 +41,9 @@ public class Graph {
     public void findPath(MapPoint p1, MapPoint p2) {
         Node n1 = findNearestPoint(p1);
         Node n2 = findNearestPoint(p2);
+
+        if (n1 == null) System.out.println("NO ENCONTRO SALIDA");
+        if (n2 == null) System.out.println("NO ENCONTRO DESTINO");
 
         if (n1 != null && n2 != null) printDijkstra(n1, n2);
     }
@@ -68,6 +71,7 @@ public class Graph {
     }
 
     void printDijkstra(Node start, Node end){
+        boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end))
             return;;
         settled = new HashSet<>();
@@ -78,16 +82,19 @@ public class Graph {
             }
         });
         nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
-        //distances.replaceAll((k,v) -> v=Double.MAX_VALUE);
         distances.put(start,0.0);
         unsettled.add(start);
+        Node node = null;
         while (!unsettled.isEmpty()){
-            Node node = unsettled.remove();
+            node = unsettled.remove();
+            if (distances.get(node) == Double.MAX_VALUE) break;
             if (settled.contains(node)) continue;
             settled.add(node);
-            System.out.println(node.getLine() + ": " + distances.get(node));
-            if (node.equals(end))
-                return;
+            //System.out.println(node.getLine() + ": " + distances.get(node));
+            if (node.equals(end)) {
+                found = true;
+                break;
+            }
 
             for (Edge edge : edges.get(node)) {
                 double targetNodeCost = distances.get(node) + edge.getDist();
@@ -95,6 +102,22 @@ public class Graph {
                     distances.put(edge.getTarget(),targetNodeCost);
                     unsettled.add(edge.getTarget());
                 }
+            }
+        }
+
+        if (found) {
+            System.out.println(node.getLine());
+            while (node != null && !node.equals(start)) {
+                double dist = Double.POSITIVE_INFINITY;
+                Node next = null;
+                for (Edge link : edges.get(node)) {
+                    if (distances.get(link.getTarget()) < dist) {
+                        next = link.getTarget();
+                        dist = distances.get(link.getTarget());
+                    }
+                }
+                System.out.println(node.getLine());
+                node = next;
             }
         }
     }

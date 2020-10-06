@@ -80,7 +80,7 @@ public class Start {
       newRoute= Integer.parseInt(record.get("route_id"));
       // Una vez que cambie de linea, cambio la que llevo acumulada el el lineNodes buffer
       if (newRoute!=routeId||newDirection!=directionId){
-        System.out.println("NUEVA LINEA: " + record.get("route_short_name"));
+        //System.out.println("NUEVA LINEA: " + record.get("route_short_name"));
         loadLine(graph,lineNodes,routeId,directionId,startPoints);
         lineNodes = new HashSet<>();
         directionId=newDirection;
@@ -90,7 +90,7 @@ public class Start {
     }
     //Siempre queda una linea extra al final
     loadLine(graph,lineNodes,routeId,directionId,startPoints);
-    graph.connectLines();
+    //graph.connectLines();
   }
 
   public static void loadLine(Graph graph,Set<Node> lineNodes, int routeId, int directionId, LineStartPoints startPoints ){
