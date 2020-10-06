@@ -12,6 +12,7 @@ import java.util.*;
 public class TextAnalysis {
     HashMap<String, Set<Integer>> tokenMap;
     HashMap<Integer, PlaceLocation> referenceMap;
+
     public TextAnalysis() throws IOException {
         preProcesamiento();
     }
@@ -44,29 +45,32 @@ public class TextAnalysis {
     public List<PlaceLocation> getSimilaritiesList (String searchTerm){
         searchTerm=searchTerm.toUpperCase();
         HashMap<Integer, Integer> placeLocationMap = new HashMap<>();
-
+        TreeMap<Integer,ArrayList<Integer>> placeLocationTree = new TreeMap<>(Comparator.reverseOrder());
         for (String qGrams: new QGram(3).createToken(searchTerm).keySet()) {
             if (!tokenMap.containsKey(qGrams)) continue;
             for (Integer id: tokenMap.get(qGrams)) {
                 placeLocationMap.putIfAbsent(id, 0);
+                if (placeLocationTree.containsKey(placeLocationMap.get(id)) && placeLocationTree.get(placeLocationMap.get(id)).contains(id)) placeLocationTree.get(placeLocationMap.get(id)).remove(id); //remuevo del tree antes de incrementar las reps
                 placeLocationMap.put(id, placeLocationMap.get(id) + 1);
+                placeLocationTree.putIfAbsent(placeLocationMap.get(id), new ArrayList<>());
+                placeLocationTree.get(placeLocationMap.get(id)).add(id); //lo agrego al mapa con las reps incrementadas
             }
         }
-        TreeSet<PlaceReps> treeReps = new TreeSet<>();
-        for (Integer id: placeLocationMap.keySet()){
-            treeReps.add(new PlaceReps(id,placeLocationMap.get(id)));
-        }
-        Iterator<PlaceReps> iterator = treeReps.iterator();
         List<PlaceLocation> result = new ArrayList<>();
-        for (int i = 0 ; i < 10; i++){
-            PlaceLocation place = referenceMap.get(iterator.next().getId());
-            result.add(new PlaceLocation(place.getLat(),place.getLng(),place.getName()));
+        for (Integer reps : placeLocationTree.keySet()){
+            for (Integer id : placeLocationTree.get(reps)){
+                result.add(referenceMap.get(id));
+                if (result.size()==10) break; //yuck!!
+            }
+            if (result.size()==10) break; //omega yuck!!
         }
+
         return result;
     }
 
 }
 
+@Deprecated
 class PlaceReps implements Comparable<PlaceReps> {
 
     private final Integer id;

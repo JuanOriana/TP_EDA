@@ -14,7 +14,6 @@ import static utils.Json.json;
 
 public class Start {
   public static void main(String[] args) throws IOException {
-    TextAnalysis textAnalysis = new TextAnalysis();
     Graph graph = new Graph();
     setUp(graph);
     //TODO: El controller deberia recibir el grafo como parametro
@@ -30,7 +29,7 @@ public class Start {
     }, json());
     get("/place", (req, res) -> {
       String searchTerm = req.queryParams("searchTerm");
-      return controller.findPlaces(searchTerm, textAnalysis);
+      return controller.findPlaces(searchTerm);
     }, json());
   }
 
