@@ -173,8 +173,9 @@ public class Graph {
                         for (Node neighbor : matrix[indexY][indexX]) {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
                             double dist = n.manhattanDist(neighbor);
-                            if (dist <= walkDistance) {
-                                insertEdge(n, new Edge(neighbor, WALK_PENAL * dist * 1000)) ;
+                            Edge newEdge = new Edge(neighbor, WALK_PENAL * dist * 1000);
+                            if (dist <= walkDistance && !edges.get(n).contains(newEdge)) {
+                                insertEdge(n, newEdge);
                                 count++;
 //                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
 //                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
