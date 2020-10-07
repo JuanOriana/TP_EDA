@@ -5,6 +5,7 @@ public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
     public HashMap<Node, Set<Edge>> edges = new HashMap<>();
     private HashMap<Node, Double> distances = new HashMap<>();
+    private Map<Node, Node> parents = new HashMap<>();
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
 
@@ -114,6 +115,7 @@ public class Graph {
                 if (unsettled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
+                    parents.put(edge.getTarget(), node);
                     distances.put(edge.getTarget(), targetNodeCost);
                     unsettled.add(edge.getTarget());
                 }
@@ -124,13 +126,7 @@ public class Graph {
             System.out.println(node.getLine());
             while (node != null && !node.equals(start)) {
                 double dist = Double.POSITIVE_INFINITY;
-                Node next = null;
-                for (Edge link : edges.get(node)) {
-                    if (distances.get(link.getTarget()) < dist) {
-                        next = link.getTarget();
-                        dist = distances.get(link.getTarget());
-                    }
-                }
+                Node next = parents.get(node);
                 System.out.println(node.getLine());
                 node = next;
             }
