@@ -16,7 +16,7 @@ public class Graph {
     private int matrixSide = 300;
 
     private double walkDistance = 0;// = 0.005;
-    private static final double WALK_PENAL = 2*3.14;
+    private static final double WALK_PENAL = 4;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -60,6 +60,7 @@ public class Graph {
         } else System.out.println("could not insert start oder target");
     }
 
+    @Deprecated
     public Node findNearestPoint(MapPoint coordinates) {
 
         HashSet<Node> nodes = new HashSet<>();
@@ -136,7 +137,7 @@ public class Graph {
         double minDist = Double.MAX_VALUE;
         Node closest = null;
         for (Node node : set) {
-            double dist = node.manhattanDist(coord);
+            double dist = node.euclideanDistance(coord);
             if (dist < minDist) {
                 closest = node;
                 minDist = dist;
@@ -233,11 +234,10 @@ public class Graph {
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                     for (Node neighbor : matrix[indexY][indexX]) {
                         if (node.getLine().equals(neighbor.getLine()) || node.equals(neighbor)) continue;
-                        double dist = node.manhattanDist(neighbor);
+                        double dist = node.eculideanDistance(neighbor);
                         Edge newEdge = new Edge(neighbor, WALK_PENAL * dist * 1000);
                         Edge newEdgeOp = new Edge(node, newEdge.dist);
                         if (dist <= walkDistance) {
-                            //System.out.println("from: "+neighbor+" to:"+n);
                             insertEdge(node, newEdge);
                             insertEdge(neighbor, newEdgeOp);
                             count++;

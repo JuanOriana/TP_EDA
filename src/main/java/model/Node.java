@@ -47,16 +47,13 @@ public class Node {
     }
     
 
-    public double manhattanDist(MapPoint p) {
+    public double euclideanDistance(MapPoint p) {
         if (p == null) throw new NullPointerException("Invalid Point");
-        double x = p.getLat();
-        double y = p.getLong();
-
-        return Math.abs(coordinates.getLat() - p.getLat()) + Math.abs(coordinates.getLong() - p.getLong());
+        return Math.sqrt(Math.pow(coordinates.getLat()-p.getLat(),2)+Math.pow(coordinates.getLong() - p.getLong(),2));
     }
 
-    public double manhattanDist(Node n) {
-        return manhattanDist(n.getCoordinates());
+    public double eculideanDistance(Node n) {
+        return euclideanDistance(n.getCoordinates());
     }
 
 }
