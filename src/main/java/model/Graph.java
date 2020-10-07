@@ -52,7 +52,9 @@ public class Graph {
             Pair<Integer, Integer> startCoords = getMatrixCoords(start);
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodes(startCoords.getElem2(), startCoords.getElem1());
+            System.out.println("start size: "+edges.get(n1).size());
             connectNodes(targetCoords.getElem2(), targetCoords.getElem1());
+            System.out.println("t-t-t-target size: "+edges.get(n2).size());
             printDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
@@ -106,7 +108,7 @@ public class Graph {
             //null pointer
             if (edges.get(node)==null) System.out.println(node.getLine());
             for (Edge edge : edges.get(node)) {
-                System.out.println("soy un edge del "+ node.getLine() +" y mi target es: "+ edge.getTarget().getLine());
+               // System.out.println("soy un edge del "+ node.getLine() +" y mi target es: "+ edge.getTarget().getLine());
                 if (unsettled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
@@ -122,7 +124,7 @@ public class Graph {
             while (node != null && !node.equals(start)) {
                // double dist = Double.POSITIVE_INFINITY;
                 Node next = parents.get(node);
-                System.out.println(node.getLine());
+                System.out.print(node.getLine()+"- ");
                 node = next;
             }
         }else {
@@ -212,6 +214,7 @@ public class Graph {
     }
 
     private boolean removeNode(Node node) {
+        int count =0;
         if (!nodes.contains(node)) return false;
         edges.remove(node);
         nodes.remove(node);
@@ -225,11 +228,21 @@ public class Graph {
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                     matrix[indexY][indexX].remove(node);
                     for (Node neighbour: matrix[indexY][indexX]){
-                        if (edges.containsKey(neighbour)) edges.get(neighbour).remove(new Edge(node, 0.0));
+                        if (neighbour==node)continue;
+                        if (edges.containsKey(neighbour)){
+                            Iterator<Edge> edgeIterator = edges.get(neighbour).iterator();
+                            while(edgeIterator.hasNext()){
+                                if (edgeIterator.next().getTarget().equals(node)){
+                                    edgeIterator.remove();
+                                    count++;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+        System.out.println("removed edges: "+count);
         return true;
     }
 }

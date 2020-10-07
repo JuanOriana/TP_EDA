@@ -27,4 +27,8 @@ public class Edge {
         return Objects.equals(target, edge.target);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(dist, target);
+    }
 }
