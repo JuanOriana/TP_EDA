@@ -231,7 +231,7 @@ public class Graph {
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                   for (Node neighbour: matrix[indexY][indexX]){
                       if (neighbour==node) continue;
-                      edges.get(neighbour).remove(new Edge(node, 0.0));
+                      if (edges.containsKey(neighbour)) edges.get(neighbour).remove(new Edge(node, 0.0));
                   }
                 }
             }
