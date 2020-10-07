@@ -90,7 +90,7 @@ public class Start {
     }
     //Siempre queda una linea extra al final
     loadLine(graph,lineNodes,routeId,directionId,startPoints);
-    //graph.connectLines();
+    graph.connectLines();
   }
 
   public static void loadLine(Graph graph,Set<Node> lineNodes, int routeId, int directionId, LineStartPoints startPoints ){

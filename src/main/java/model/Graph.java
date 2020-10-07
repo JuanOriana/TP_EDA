@@ -27,9 +27,9 @@ public class Graph {
             int x = matrixCoords.getElem1();
             int y = matrixCoords.getElem2();
             if (x < 0 || x >= matrixSide || y < 0 || y >= matrixSide) {
-                return added;
+                nodes.remove(node);
+                return false;
             }
-            nodes.add(node);
             if (matrix[y][x] == null) matrix[y][x] = new Cell();
             added = matrix[y][x].add(node);
         }
@@ -88,12 +88,7 @@ public class Graph {
         }
 
         settled = new HashSet<>();
-        unsettled = new PriorityQueue<>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return Double.compare(distances.get(o1), distances.get(o2));
-            }
-        });
+        unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
         nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
         distances.put(start, 0.0);
         unsettled.add(start);
@@ -125,7 +120,7 @@ public class Graph {
             System.out.println("found");
             System.out.println(node.getLine());
             while (node != null && !node.equals(start)) {
-                double dist = Double.POSITIVE_INFINITY;
+               // double dist = Double.POSITIVE_INFINITY;
                 Node next = parents.get(node);
                 System.out.println(node.getLine());
                 node = next;
@@ -175,9 +170,9 @@ public class Graph {
                     if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                         for (Node neighbor : matrix[indexY][indexX]) {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
-                            Double dist = n.manhattanDist(neighbor);
+                            double dist = n.manhattanDist(neighbor);
                             if (dist <= walkDistance) {
-                                if (insertEdge(n, new Edge(neighbor, WALK_PENAL * dist * 1000))) ;
+                                insertEdge(n, new Edge(neighbor, WALK_PENAL * dist * 1000)) ;
                                 count++;
 //                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
 //                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
@@ -209,12 +204,11 @@ public class Graph {
     private class Cell extends HashSet<Node> {
     }
 
-    ;
 
     private Pair<Integer, Integer> getMatrixCoords(MapPoint coordinates) {
         double diffLat = maxLat - minLat;
         double diffLong = maxLong - minLong;
-        return new Pair<Integer, Integer>((int) (matrixSide * (coordinates.getLat() - minLat) / diffLat), (int) (matrixSide * (coordinates.getLong() - minLong) / diffLong));
+        return new Pair<>((int) (matrixSide * (coordinates.getLat() - minLat) / diffLat), (int) (matrixSide * (coordinates.getLong() - minLong) / diffLong));
     }
 
     private boolean removeNode(Node node) {
@@ -230,7 +224,6 @@ public class Graph {
                 int indexY = y + i;
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                   for (Node neighbour: matrix[indexY][indexX]){
-                      if (neighbour==node) continue;
                       if (edges.containsKey(neighbour)) edges.get(neighbour).remove(new Edge(node, 0.0));
                   }
                 }
