@@ -110,8 +110,8 @@ public class Graph {
             //null pointer
             if (edges.get(node)==null) System.out.println(node.getLine());
             for (Edge edge : edges.get(node)) {
-                if (!unsettled.contains(edge.getTarget())) continue;
-                System.out.println(edge);
+                System.out.println("soy un edge del "+ node.getLine() +" y mi target es: "+ edge.getTarget().getLine());
+                if (unsettled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
                     distances.put(edge.getTarget(), targetNodeCost);
