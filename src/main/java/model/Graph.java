@@ -20,19 +20,20 @@ public class Graph {
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
     public boolean insertNode(Node node) {
-        boolean added = false;//= nodes.add(node);
-        //if (added) {
-        Pair<Integer, Integer> matrixCoords = getMatrixCoords(node.getCoordinates());
-        int x = matrixCoords.getElem1();
-        int y = matrixCoords.getElem2();
-        if (x < 0 || x >= matrixSide || y < 0 || y >= matrixSide) {
-            return added;
+        boolean added = nodes.add(node);
+        if (added) {
+            Pair<Integer, Integer> matrixCoords = getMatrixCoords(node.getCoordinates());
+            int x = matrixCoords.getElem1();
+            int y = matrixCoords.getElem2();
+            if (x < 0 || x >= matrixSide || y < 0 || y >= matrixSide) {
+                return added;
+            }
+            nodes.add(node);
+            if (matrix[y][x] == null) matrix[y][x] = new Cell();
+            added = matrix[y][x].add(node);
         }
-        nodes.add(node);
-        if (matrix[y][x] == null) matrix[y][x] = new Cell();
-        added = matrix[y][x].add(node);
         return added;
-        //}
+
 
     }
 
@@ -54,7 +55,7 @@ public class Graph {
             printDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
-        } else System.out.println("could not insert point");
+        } else System.out.println("could not insert start oder target");
     }
 
     public Node findNearestPoint(MapPoint coordinates) {
@@ -81,7 +82,7 @@ public class Graph {
     void printDijkstra(Node start, Node end) {
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
-            System.out.println("no encontre los nodos xd ahs sido trolleado");
+            System.out.println("please send valid nodes next time thx");
             return;
         }
 
@@ -134,6 +135,7 @@ public class Graph {
                 node = next;
             }
         }else {
+            System.out.println(settled);
             System.out.println("not found :(");
         }
     }
@@ -232,6 +234,7 @@ public class Graph {
                 int indexY = y + i;
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                   for (Node neighbour: matrix[indexY][indexX]){
+                      if (neighbour==node) continue;
                       edges.get(neighbour).remove(new Edge(node, 0.0));
                   }
                 }
