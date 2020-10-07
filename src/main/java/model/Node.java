@@ -48,11 +48,11 @@ public class Node {
     
 
     public double manhattanDist(MapPoint p) {
-        if (p == null) throw new NullPointerException("Invalid Node");
+        if (p == null) throw new NullPointerException("Invalid Point");
         double x = p.getLat();
         double y = p.getLong();
 
-        return Math.abs(x - coordinates.getElem1()) + Math.abs(y - getCoordinates().getElem2());
+        return Math.abs(coordinates.getLat() - p.getLat()) + Math.abs(coordinates.getLong() - p.getLong());
     }
 
     public double manhattanDist(Node n) {
