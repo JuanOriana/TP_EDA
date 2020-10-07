@@ -38,7 +38,6 @@ public class Node {
     public int hashCode() {
         return Objects.hash(line, coordinates);
     }
-
     @Override
     public String toString() {
         return "Node{" +

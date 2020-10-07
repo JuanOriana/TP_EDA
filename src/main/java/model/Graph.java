@@ -16,7 +16,7 @@ public class Graph {
     private int matrixSide = 300;
 
     private double walkDistance = 0;// = 0.005;
-    private static final double WALK_PENAL = 10;
+    private static final double WALK_PENAL = 2*3.14;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -52,9 +52,8 @@ public class Graph {
             Pair<Integer, Integer> startCoords = getMatrixCoords(start);
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodes(startCoords.getElem2(), startCoords.getElem1());
-            System.out.println("start size: "+edges.get(n1).size());
+            //System.out.println("start size: "+edges.get(n1).size());
             connectNodes(targetCoords.getElem2(), targetCoords.getElem1());
-            System.out.println("t-t-t-target size: "+edges.get(n2).size());
             printDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
@@ -100,7 +99,6 @@ public class Graph {
             if (distances.get(node) == Double.MAX_VALUE) break;
             if (settled.contains(node)) continue;
             settled.add(node);
-            //System.out.println(node.getLine() + ": " + distances.get(node));
             if (node.equals(end)) {
                 found = true;
                 break;
@@ -108,7 +106,6 @@ public class Graph {
             //null pointer
             if (edges.get(node)==null) System.out.println(node.getLine());
             for (Edge edge : edges.get(node)) {
-               // System.out.println("soy un edge del "+ node.getLine() +" y mi target es: "+ edge.getTarget().getLine());
                 if (unsettled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
@@ -119,14 +116,13 @@ public class Graph {
             }
         }
         if (found) {
-            System.out.println("found");
-            System.out.println(node.getLine());
             while (node != null && !node.equals(start)) {
+                System.out.println(node.getLine()+" "+node.getCoordinates());
                // double dist = Double.POSITIVE_INFINITY;
                 Node next = parents.get(node);
-                System.out.print(node.getLine()+"- ");
                 node = next;
             }
+            System.out.println();
         }else {
             System.out.println(settled);
             System.out.println("not found :(");
@@ -156,11 +152,11 @@ public class Graph {
                 count += connectNodes(i, j);
             }
         }
-        System.out.println("total = " + count);
     }
 
     private int connectNodes(int y, int x) { //recibe primero la longitud y luego la latitud -> fue pedro :-D
-
+       // System.out.println("llamado connect nodes");
+       // System.out.println("coord x: "+x+" coord y: "+y);
         int count = 0;
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
         for (Node n : matrix[y][x]) {
@@ -174,13 +170,13 @@ public class Graph {
                             if (n.getLine().equals(neighbor.getLine()) || n.equals(neighbor)) continue;
                             double dist = n.manhattanDist(neighbor);
                             Edge newEdge = new Edge(neighbor, WALK_PENAL * dist * 1000);
-                            if (dist <= walkDistance && !edges.get(n).contains(newEdge)) {
+                            Edge newEdgeOp = new Edge(n, newEdge.dist);
+                            if (dist <= walkDistance) {
+                                //System.out.println("from: "+neighbor+" to:"+n);
                                 insertEdge(n, newEdge);
+                                insertEdge(neighbor, newEdgeOp);
                                 count++;
-//                                System.out.println("NODE 1: " + n.getCoordinates().getElem1() + " " + n.getCoordinates().getElem2());
-//                                System.out.println("NODE 2: " + neighbor.getCoordinates().getElem1() + " " + neighbor.getCoordinates().getElem2());
-//                                System.out.println("############################################################");
-                            }
+                          }
                         }
                     }
                 }
@@ -233,7 +229,8 @@ public class Graph {
                         if (edges.containsKey(neighbour)){
                             Iterator<Edge> edgeIterator = edges.get(neighbour).iterator();
                             while(edgeIterator.hasNext()){
-                                if (edgeIterator.next().getTarget().equals(node)){
+                                Edge edge = edgeIterator.next();
+                                if (edge.getTarget().equals(node)){
                                     edgeIterator.remove();
                                     count++;
                                 }

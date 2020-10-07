@@ -9,6 +9,8 @@ public class MapPoint extends Pair<Double, Double> {
 
     public Double getLong() {return this.getElem2();}
 
+
+
     @Override
     public String toString() {
         return "Latitude: " + getLat() + ", Longitude: " + getLong();
