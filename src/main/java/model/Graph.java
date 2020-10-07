@@ -223,9 +223,10 @@ public class Graph {
                 int indexX = x + j;
                 int indexY = y + i;
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
-                  for (Node neighbour: matrix[indexY][indexX]){
-                      if (edges.containsKey(neighbour)) edges.get(neighbour).remove(new Edge(node, 0.0));
-                  }
+                    matrix[indexY][indexX].remove(node);
+                    for (Node neighbour: matrix[indexY][indexX]){
+                        if (edges.containsKey(neighbour)) edges.get(neighbour).remove(new Edge(node, 0.0));
+                    }
                 }
             }
         }
