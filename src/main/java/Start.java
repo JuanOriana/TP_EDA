@@ -65,7 +65,6 @@ public class Start {
 
     graph.setMinAndMaxLat((-35.182685 - 0.01), (-34.042402 + 0.01));
     graph.setMinAndMaxLong((-59.82785 - 0.01), (-57.730346999999995 + 0.01));
-    graph.setWalkDistance(0.008*1000);
 
     InputStream is = Start.class.getResourceAsStream(fileName);
 

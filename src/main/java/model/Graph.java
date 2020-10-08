@@ -15,7 +15,6 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private double walkDistance = 0;// = 0.005;
     private static final double CONNECT_PENAL = 5;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
@@ -107,7 +106,7 @@ public class Graph {
             //null pointer
             if (edges.get(node)==null) System.out.println(node.getLine());
             for (Edge edge : edges.get(node)) {
-                if (unsettled.contains(edge.getTarget())) continue;
+                if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
                 if (targetNodeCost < distances.get(edge.getTarget())) {
                     parents.put(edge.getTarget(), node);
@@ -166,9 +165,6 @@ public class Graph {
     }
 
 
-    public void setWalkDistance(double walkDistance) {
-        this.walkDistance = walkDistance;
-    }
 
     public void setMinAndMaxLat(Double minLat, Double maxLat) {
         this.minLat = minLat;
@@ -232,12 +228,11 @@ public class Graph {
                 int indexY = y + i;
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                     for (Node neighbor : matrix[indexY][indexX]) {
-                        if (node.getLine().equals(neighbor.getLine()) || node.equals(neighbor)) continue;
-                        double dist = node.eculideanDistance(neighbor) * 1000;
-                        if (!isWalking) dist*=CONNECT_PENAL;
-                        Edge newEdge = new Edge(neighbor, dist);
-                        Edge newEdgeOp = new Edge(node, newEdge.dist);
-                        if (dist <= walkDistance) {
+                        if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
+                            double dist = node.eculideanDistance(neighbor) * 1000;
+                            if (!isWalking) dist *= CONNECT_PENAL;
+                            Edge newEdge = new Edge(neighbor, dist);
+                            Edge newEdgeOp = new Edge(node, newEdge.dist);
                             insertEdge(node, newEdge);
                             insertEdge(neighbor, newEdgeOp);
                             count++;
