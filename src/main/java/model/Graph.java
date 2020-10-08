@@ -44,41 +44,72 @@ public class Graph {
         return edges.get(root).add(edge);
     }
 
-    public void findPath(MapPoint start, MapPoint target) {
+    public List<BusInPath> findPath(MapPoint start, MapPoint target) {
+        List<BusInPath> bussesList = new LinkedList<>();
         Node n1 = new Node("START", start);
         Node n2 = new Node("END", target);
         if (insertNode(n1) && insertNode(n2)) {
             Pair<Integer, Integer> startCoords = getMatrixCoords(start);
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
-            //System.out.println("start size: "+edges.get(n1).size());
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
             printDijkstra(n1, n2);
+            bussesList.addAll(searchDijkstra(n1, n2));
             removeNode(n1);
             removeNode(n2);
         } else System.out.println("could not insert start oder target");
+        return bussesList;
     }
 
-    @Deprecated
-    public Node findNearestPoint(MapPoint coordinates) {
+    List<BusInPath> searchDijkstra (Node start, Node end){
+        LinkedList<BusInPath> bussesList = new LinkedList<>();
+        boolean found = false;
+        if (!nodes.contains(start) || !nodes.contains(end)) {
+            System.out.println("please send valid nodes next time thx");
+            return bussesList;
+        }
 
-        HashSet<Node> nodes = new HashSet<>();
-
-        Pair<Integer, Integer> matrixCoords = getMatrixCoords(coordinates);
-        int x = matrixCoords.getElem1();
-        int y = matrixCoords.getElem2();
-
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                int indexX = x + j;
-                int indexY = y + i;
-                if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
-                    if (matrix[indexY][indexX] != null) nodes.addAll(matrix[indexY][indexX]);
+        settled = new HashSet<>();
+        unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
+        nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
+        distances.put(start, 0.0);
+        unsettled.add(start);
+        Node node = null;
+        while (!unsettled.isEmpty()) {
+            node = unsettled.remove();
+            if (distances.get(node) == Double.MAX_VALUE) break;
+            if (settled.contains(node)) continue;
+            settled.add(node);
+            if (node.equals(end)) {
+                found = true;
+                break;
+            }
+            if (edges.get(node)==null) System.out.println(node.getLine());
+            for (Edge edge : edges.get(node)) {
+                if (settled.contains(edge.getTarget())) continue;
+                double targetNodeCost = distances.get(node) + edge.getDist();
+                if (targetNodeCost < distances.get(edge.getTarget())) {
+                    parents.put(edge.getTarget(), node);
+                    distances.put(edge.getTarget(), targetNodeCost);
+                    unsettled.add(edge.getTarget());
                 }
             }
         }
-
-        return closestToPoint(coordinates, nodes);
+        if (found) {
+            node = parents.get(node); //no interesa el nodo END para el recorrido
+            Node previous = node;
+            while (node != null && !node.equals(start)){
+                Node lastVisitedNode = node;
+                node = parents.get(node);
+                if (node !=null && !node.getLine().equals(lastVisitedNode.getLine())){ //si cambie de linea
+                    bussesList.addFirst(new BusInPath(previous.getLine(),
+                            previous.getCoordinates().getLat(), previous.getCoordinates().getLong(),
+                                lastVisitedNode.getCoordinates().getLat(), lastVisitedNode.getCoordinates().getLong()));
+                    previous = node;
+                }
+            }
+        }
+        return bussesList;
     }
 
     void printDijkstra(Node start, Node end) {
@@ -154,8 +185,6 @@ public class Graph {
     }
 
     private int connectNodes(int y, int x) { //recibe primero la longitud y luego la latitud -> fue pedro :-D
-       // System.out.println("llamado connect nodes");
-       // System.out.println("coord x: "+x+" coord y: "+y);
         int count = 0;
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
         for (Node n : matrix[y][x]) {
@@ -216,7 +245,6 @@ public class Graph {
                 }
             }
         }
-        System.out.println("removed edges: "+count);
         return true;
     }
     private int connectNodeToMatrixNodes(Node node, int y, int x, boolean isWalking) {

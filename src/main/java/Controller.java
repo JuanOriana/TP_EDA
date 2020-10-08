@@ -1,4 +1,6 @@
 import model.BusInPath;
+import model.Graph;
+import model.MapPoint;
 import utils.textSearch.PlaceLocation;
 import utils.textSearch.TextAnalysis;
 
@@ -14,8 +16,9 @@ public class Controller {
     textAnalysis = new TextAnalysis();
   }
 
-  public List<BusInPath> findPath(double fromLat, double fromLng, double toLat, double toLng) {
-    return Arrays.asList(new BusInPath("Sweet home Alabama! xD", 0, 0, 0, 0));
+  public List<BusInPath> findPath(Graph graph, double fromLat, double fromLng, double toLat, double toLng) {
+     return graph.findPath(new MapPoint(fromLat, fromLng), new MapPoint(toLat, toLng));
+   // return Arrays.asList(new BusInPath("Sweet home Alabama! xD", 0, 0, 0, 0));
   }
 
   public List<PlaceLocation> findPlaces(String searchTerm) {
