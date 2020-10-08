@@ -16,7 +16,7 @@ public class Graph {
     private int matrixSide = 300;
 
     private double walkDistance = 0;// = 0.005;
-    private static final double WALK_PENAL = 4;
+    private static final double CONNECT_PENAL = 5;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -51,9 +51,9 @@ public class Graph {
         if (insertNode(n1) && insertNode(n2)) {
             Pair<Integer, Integer> startCoords = getMatrixCoords(start);
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
-            connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1());
+            connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             //System.out.println("start size: "+edges.get(n1).size());
-            connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1());
+            connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
             printDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
@@ -120,8 +120,7 @@ public class Graph {
             while (node != null && !node.equals(start)) {
                 System.out.println(node.getLine()+" "+node.getCoordinates());
                // double dist = Double.POSITIVE_INFINITY;
-                Node next = parents.get(node);
-                node = next;
+                node = parents.get(node);;
             }
             System.out.println();
         }else {
@@ -161,7 +160,7 @@ public class Graph {
         int count = 0;
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
         for (Node n : matrix[y][x]) {
-            count+=connectNodeToMatrixNodes(n,y,x);
+            count+=connectNodeToMatrixNodes(n,y,x,false);
         }
         return count;
     }
@@ -224,7 +223,7 @@ public class Graph {
         System.out.println("removed edges: "+count);
         return true;
     }
-    private int connectNodeToMatrixNodes(Node node, int y, int x) {
+    private int connectNodeToMatrixNodes(Node node, int y, int x, boolean isWalking) {
         int count = 0;
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
         for (int i = -1; i <= 1; i++) {
@@ -234,8 +233,9 @@ public class Graph {
                 if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
                     for (Node neighbor : matrix[indexY][indexX]) {
                         if (node.getLine().equals(neighbor.getLine()) || node.equals(neighbor)) continue;
-                        double dist = node.eculideanDistance(neighbor);
-                        Edge newEdge = new Edge(neighbor, WALK_PENAL * dist * 1000);
+                        double dist = node.eculideanDistance(neighbor) * 1000;
+                        if (!isWalking) dist*=CONNECT_PENAL;
+                        Edge newEdge = new Edge(neighbor, dist);
                         Edge newEdgeOp = new Edge(node, newEdge.dist);
                         if (dist <= walkDistance) {
                             insertEdge(node, newEdge);

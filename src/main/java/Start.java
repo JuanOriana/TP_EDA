@@ -7,6 +7,7 @@ import utils.textSearch.TextAnalysis;
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static spark.Spark.*;
@@ -64,7 +65,7 @@ public class Start {
 
     graph.setMinAndMaxLat((-35.182685 - 0.01), (-34.042402 + 0.01));
     graph.setMinAndMaxLong((-59.82785 - 0.01), (-57.730346999999995 + 0.01));
-    graph.setWalkDistance(0.008);
+    graph.setWalkDistance(0.008*1000);
 
     InputStream is = Start.class.getResourceAsStream(fileName);
 
@@ -114,7 +115,7 @@ public class Start {
 
       double dist = toAdd.eculideanDistance(last);
 
-        graph.insertEdge(toAdd,new Edge(last,dist*1000));
+      graph.insertEdge(toAdd,new Edge(last,dist*1000));
       graph.insertEdge(last,new Edge(toAdd,dist*1000));
 
       last=toAdd;
