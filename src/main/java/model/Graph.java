@@ -15,9 +15,32 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL = 5;
+    private double CONNECT_PENAL = 100;
+    private static final double WALKING_DIST = 8;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
+
+
+    public void setCONNECT_PENAL(double CONNECT_PENAL) {
+        this.CONNECT_PENAL = CONNECT_PENAL;
+    }
+
+    public double getCONNECT_PENAL() {
+        return CONNECT_PENAL;
+    }
+
+//    public Graph copy() {
+//        Graph copy = new Graph();
+//        copy.nodes = new HashSet<>();
+//        copy.nodes.addAll(nodes);
+//        copy.edges = new HashMap<>();
+//        copy.edges.putAll(edges);
+//        copy.distances = new HashMap<>();
+//        copy.parents = new HashMap<>();
+//        copy.settled = new HashSet<>();
+//
+//
+//    }
 
     public boolean insertNode(Node node) {
         boolean added = nodes.add(node);
@@ -148,11 +171,11 @@ public class Graph {
         }
         if (found) {
             while (node != null && !node.equals(start)) {
-                System.out.println(node.getLine()+" "+node.getCoordinates());
+                //System.out.println(node.getLine()+" "+node.getCoordinates());
                // double dist = Double.POSITIVE_INFINITY;
                 node = parents.get(node);;
             }
-            System.out.println();
+            //System.out.println();
         }else {
             System.out.println(settled);
             System.out.println("not found :(");
@@ -258,12 +281,15 @@ public class Graph {
                     for (Node neighbor : matrix[indexY][indexX]) {
                         if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
                             double dist = node.eculideanDistance(neighbor) * 1000;
-                            if (!isWalking) dist *= CONNECT_PENAL;
-                            Edge newEdge = new Edge(neighbor, dist);
-                            Edge newEdgeOp = new Edge(node, newEdge.dist);
-                            insertEdge(node, newEdge);
-                            insertEdge(neighbor, newEdgeOp);
-                            count++;
+                            if (dist <= WALKING_DIST) {
+                                if (!isWalking) dist *= CONNECT_PENAL;
+
+                                Edge newEdge = new Edge(neighbor, dist);
+                                Edge newEdgeOp = new Edge(node, newEdge.dist);
+                                insertEdge(node, newEdge);
+                                insertEdge(neighbor, newEdgeOp);
+                                count++;
+                            }
                         }
                     }
                 }

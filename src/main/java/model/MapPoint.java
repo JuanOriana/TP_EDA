@@ -13,6 +13,6 @@ public class MapPoint extends Pair<Double, Double> {
 
     @Override
     public String toString() {
-        return "Latitude: " + getLat() + ", Longitude: " + getLong();
+        return "Latitude: " + getLat() + " " + getLong();
     }
 }
