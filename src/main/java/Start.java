@@ -1,24 +1,25 @@
-import com.opencsv.CSVReader;
 import model.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import utils.LineStartPoints;
-import utils.textSearch.TextAnalysis;
-
 import java.io.*;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-
 import static spark.Spark.*;
 import static utils.Json.json;
 
 public class Start {
-  public static void main(String[] args) throws IOException {
-    Graph graph = new Graph();
-    setUp(graph);
-    //TODO: El controller deberia recibir el grafo como parametro
-    Controller controller = new Controller();
+  public static void main(String[] args){
+    Controller controller;
+    Graph graph;
+    try {
+      graph = new Graph();
+      setUp(graph);
+      controller = new Controller(); //TODO: El controller deberia recibir el grafo como parametro
+    }catch (IOException e){
+      System.err.println("Error durante la lectura de los archivos csv: " + e.getMessage());
+      return;
+    }
     cors();
     after((req, res) -> res.type("application/json"));
     get("/path", (req, res) -> {

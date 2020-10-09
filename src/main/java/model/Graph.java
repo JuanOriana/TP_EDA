@@ -15,7 +15,7 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL = 5;
+    private static final double CONNECT_PENAL = 4;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -53,11 +53,14 @@ public class Graph {
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
-            printDijkstra(n1, n2);
+            //printDijkstra(n1, n2);
             bussesList.addAll(searchDijkstra(n1, n2));
             removeNode(n1);
             removeNode(n2);
         } else System.out.println("could not insert start oder target");
+        if (bussesList.size()==1 &&
+                bussesList.get(0).fromLat==bussesList.get(0).toLat &&
+                    bussesList.get(0).fromLng==bussesList.get(0).toLng) bussesList.clear();
         return bussesList;
     }
 
@@ -112,6 +115,7 @@ public class Graph {
         return bussesList;
     }
 
+    @Deprecated
     void printDijkstra(Node start, Node end) {
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
@@ -150,7 +154,7 @@ public class Graph {
             while (node != null && !node.equals(start)) {
                 System.out.println(node.getLine()+" "+node.getCoordinates());
                // double dist = Double.POSITIVE_INFINITY;
-                node = parents.get(node);;
+                node = parents.get(node);
             }
             System.out.println();
         }else {
@@ -176,21 +180,18 @@ public class Graph {
     }
 
     public void connectLines() {
-        int count = 0;
         for (int i = 0; i < matrixSide; i++) {
             for (int j = 0; j < matrixSide; j++) {
-                count += connectNodes(i, j);
+                connectNodes(i, j);
             }
         }
     }
 
-    private int connectNodes(int y, int x) { //recibe primero la longitud y luego la latitud -> fue pedro :-D
-        int count = 0;
-        if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
+    private void connectNodes(int y, int x) { //recibe primero la longitud y luego la latitud -> fue pedro :-D
+        if (matrix[y][x] == null || matrix[y][x].isEmpty()) return;
         for (Node n : matrix[y][x]) {
-            count+=connectNodeToMatrixNodes(n,y,x,false);
+           connectNodeToMatrixNodes(n,y,x,false);
         }
-        return count;
     }
 
 
@@ -215,9 +216,8 @@ public class Graph {
         return new Pair<>((int) (matrixSide * (coordinates.getLat() - minLat) / diffLat), (int) (matrixSide * (coordinates.getLong() - minLong) / diffLong));
     }
 
-    private boolean removeNode(Node node) {
-        int count =0;
-        if (!nodes.contains(node)) return false;
+    private void removeNode(Node node) {
+        if (!nodes.contains(node)) return;
         edges.remove(node);
         nodes.remove(node);
         Pair<Integer, Integer> nodeCoords = getMatrixCoords(node.getCoordinates());
@@ -237,7 +237,6 @@ public class Graph {
                                 Edge edge = edgeIterator.next();
                                 if (edge.getTarget().equals(node)){
                                     edgeIterator.remove();
-                                    count++;
                                 }
                             }
                         }
@@ -245,11 +244,10 @@ public class Graph {
                 }
             }
         }
-        return true;
     }
-    private int connectNodeToMatrixNodes(Node node, int y, int x, boolean isWalking) {
-        int count = 0;
-        if (matrix[y][x] == null || matrix[y][x].isEmpty()) return 0;
+
+    private void connectNodeToMatrixNodes(Node node, int y, int x, boolean isWalking) {
+        if (matrix[y][x] == null || matrix[y][x].isEmpty()) return;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int indexX = x + j;
@@ -263,12 +261,10 @@ public class Graph {
                             Edge newEdgeOp = new Edge(node, newEdge.dist);
                             insertEdge(node, newEdge);
                             insertEdge(neighbor, newEdgeOp);
-                            count++;
                         }
                     }
                 }
             }
         }
-        return count;
     }
 }
