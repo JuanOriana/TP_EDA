@@ -45,7 +45,7 @@ public class Graph {
     }
 
     public List<BusInPath> findPath(MapPoint start, MapPoint target) {
-        List<BusInPath> bussesList = new LinkedList<>();
+        List<BusInPath> bussesList = null;
         Node n1 = new Node("START", start);
         Node n2 = new Node("END", target);
         if (insertNode(n1) && insertNode(n2)) {
@@ -54,21 +54,21 @@ public class Graph {
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
             //printDijkstra(n1, n2);
-            bussesList.addAll(searchDijkstra(n1, n2));
+            bussesList = searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
-        } else System.out.println("could not insert start oder target");
+        } else System.out.println("could not insert start oder target");//EXCEPCION!!!!
         if (bussesList.size()==1 &&
                 bussesList.get(0).fromLat==bussesList.get(0).toLat &&
                     bussesList.get(0).fromLng==bussesList.get(0).toLng) bussesList.clear();
         return bussesList;
     }
 
-    List<BusInPath> searchDijkstra (Node start, Node end){
+    public List<BusInPath> searchDijkstra (Node start, Node end){
         LinkedList<BusInPath> bussesList = new LinkedList<>();
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
-            System.out.println("please send valid nodes next time thx");
+            System.out.println("please send valid nodes next time thx");//EXCEPCION!!!!
             return bussesList;
         }
 
@@ -87,7 +87,7 @@ public class Graph {
                 found = true;
                 break;
             }
-            if (edges.get(node)==null) System.out.println(node.getLine());
+            if (edges.get(node)==null) System.out.println(node.getLine()); //EXCEPCION!!!!
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
