@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class LineStartPoints {
 	Map<Pair<Integer, Integer>, MapPoint> parseMap = new HashMap<>();
+	Map<String, MapPoint> subwayParse = new HashMap<>();
 
 	public LineStartPoints() throws IOException {
 		createParse();
@@ -23,6 +24,9 @@ public class LineStartPoints {
 
 	public MapPoint parseRoute(int routeID, int directionID){
 		return parseMap.get(new Pair<>(routeID, directionID));
+	}
+	public MapPoint parseSubway(String line){
+		return subwayParse.get(line);
 	}
 
 	private void createParse() throws IOException {
@@ -48,5 +52,17 @@ public class LineStartPoints {
 
 		}
 		in.close();
+		String fileNameSub = "/terminales-de-subte.csv";
+		InputStream su = LineStartPoints.class.getResourceAsStream(fileNameSub);
+		Reader iS = new InputStreamReader(su);
+		Iterable<CSVRecord> headers = CSVFormat.DEFAULT
+				.withFirstRecordAsHeader().parse(iS);
+		for (CSVRecord subway : headers){
+			String line = subway.get("linea");
+			lat = subway.get("lat");
+			lng = subway.get("long");
+			subwayParse.putIfAbsent(line, new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng)));
+		}
+		iS.close();
 	}
 }
