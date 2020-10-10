@@ -16,7 +16,6 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL = 4;
     private static final double CONNECT_PENAL_ADDITIVE = 10;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
@@ -90,7 +89,7 @@ public class Graph {
                 break;
             }
             //ESTO DA NULL SI NODE NO TIENE EDGES
-            if (edges.get(node)==null) break; //no estoy muy segura que tirar aca o si hace falta
+            if (edges.get(node)==null) break;
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
@@ -207,7 +206,6 @@ public class Graph {
                         if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
                             double dist = node.eculideanDistance(neighbor) * 1000;
                             if (!isWalking) {
-                                //dist *= CONNECT_PENAL;
                                 dist += CONNECT_PENAL_ADDITIVE;
                             }
                             Edge newEdge = new Edge(neighbor, dist);
