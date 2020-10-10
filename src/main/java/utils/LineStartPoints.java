@@ -54,15 +54,15 @@ public class LineStartPoints {
 		in.close();
 		String fileNameSub = "/terminales-de-subte.csv";
 		InputStream su = LineStartPoints.class.getResourceAsStream(fileNameSub);
-		Reader iS = new InputStreamReader(su);
+		Reader reader = new InputStreamReader(su);
 		Iterable<CSVRecord> headers = CSVFormat.DEFAULT
-				.withFirstRecordAsHeader().parse(iS);
+				.withFirstRecordAsHeader().parse(reader);
 		for (CSVRecord subway : headers){
 			String line = subway.get("linea");
 			lat = subway.get("lat");
 			lng = subway.get("long");
 			subwayParse.putIfAbsent(line, new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng)));
 		}
-		iS.close();
+		reader.close();
 	}
 }
