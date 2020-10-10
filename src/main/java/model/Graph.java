@@ -10,9 +10,9 @@ public class Graph {
     private HashSet<Node> settled;
     private PriorityQueue<Node> unsettled;
 
-    private double minLat = 0;// = (-35.182685 - 0.01), maxLat = (-34.042402 + 0.01);
+    private double minLat = 0;
     private double maxLat = 0;
-    private double minLong = 0;// = (-59.82785 - 0.01), maxLong = (-57.730346999999995 + 0.01);
+    private double minLong = 0;
     private double maxLong = 0;
     private int matrixSide = 300;
 
@@ -54,7 +54,7 @@ public class Graph {
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
-            printDijkstra(n1, n2);
+            //printDijkstra(n1, n2);
             bussesList=searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
@@ -73,20 +73,24 @@ public class Graph {
 
         settled = new HashSet<>();
         unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
-        nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
+        nodes.forEach(node -> distances.put(node, Double.MAX_VALUE)); //O(n)
         distances.put(start, 0.0);
         unsettled.add(start);
         Node node = null;
+
+        //
+
         while (!unsettled.isEmpty()) {
             node = unsettled.remove();
-            if (distances.get(node) == Double.MAX_VALUE) break;
+            if (distances.get(node) == Double.MAX_VALUE) break; //El grafo no es conexo y no hay forma de llegar
             if (settled.contains(node)) continue;
             settled.add(node);
             if (node.equals(end)) {
                 found = true;
                 break;
             }
-            if (edges.get(node)==null) throw new RuntimeException(); //no estoy muy segura que tirar aca o si hace falta
+            //ESTO DA NULL SI NODE NO TIENE EDGES
+            if (edges.get(node)==null) throw new RuntimeException("Impossible to reach"); //no estoy muy segura que tirar aca o si hace falta
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
@@ -161,7 +165,7 @@ public class Graph {
         }
     }
 
-    //TODO chequear si esta funcion tiene que estar en Graph y no en Node
+
     //Dado un set de nodos y una coordenada espacial, encuentro el mas cercano
     public static Node closestToPoint(MapPoint coord, Set<Node> set) {
         if (set.isEmpty()) return null;
@@ -221,14 +225,13 @@ public class Graph {
         Pair<Integer, Integer> nodeCoords = getMatrixCoords(node.getCoordinates());
         int x = nodeCoords.getElem1();
         int y = nodeCoords.getElem2();
+        if (isInMatrix(y,x)) matrix[y][x].remove(node);
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int indexX = x + j;
                 int indexY = y + i;
-                if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
-                    matrix[indexY][indexX].remove(node);
+                if (isInMatrix(indexY, indexX)) {
                     for (Node neighbour: matrix[indexY][indexX]){
-                        if (neighbour==node)continue;
                         if (edges.containsKey(neighbour)){
                             edges.get(neighbour).removeIf(edge -> edge.getTarget().equals(node));
                         }
@@ -238,13 +241,17 @@ public class Graph {
         }
     }
 
+    private boolean isInMatrix(int row, int col) {
+        return (col >= 0 && col < matrixSide && row >= 0 && row < matrixSide && matrix[row][col] != null);
+    }
+
     private void connectNodeToMatrixNodes(Node node, int y, int x, boolean isWalking) {
         if (matrix[y][x] == null || matrix[y][x].isEmpty()) return;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 int indexX = x + j;
                 int indexY = y + i;
-                if (indexX >= 0 && indexX < matrixSide && indexY >= 0 && indexY < matrixSide && matrix[indexY][indexX] != null) {
+                if (isInMatrix(indexY, indexX)) {
                     for (Node neighbor : matrix[indexY][indexX]) {
                         if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
                             double dist = node.eculideanDistance(neighbor) * 1000;
