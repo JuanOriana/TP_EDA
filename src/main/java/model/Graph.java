@@ -46,7 +46,7 @@ public class Graph {
     }
 
     public List<BusInPath> findPath(MapPoint start, MapPoint target) {
-        List<BusInPath> bussesList = null;
+        List<BusInPath> bussesList;
         Node n1 = new Node("START", start);
         Node n2 = new Node("END", target);
         if (insertNode(n1) && insertNode(n2)) {
@@ -54,14 +54,13 @@ public class Graph {
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
-            //printDijkstra(n1, n2);
+            printDijkstra(n1, n2);
             bussesList=searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
         } else throw new RejectedExecutionException("Failed to ascertain the coordinates of origin and target");
-        if (bussesList!= null && bussesList.size()==1 &&
-                bussesList.get(0).fromLat==bussesList.get(0).toLat &&
-                    bussesList.get(0).fromLng==bussesList.get(0).toLng) bussesList.clear();
+        bussesList.removeIf(coords -> coords.fromLng == coords.toLng &&
+                coords.fromLat == coords.toLat);
         return bussesList;
     }
 
@@ -231,13 +230,7 @@ public class Graph {
                     for (Node neighbour: matrix[indexY][indexX]){
                         if (neighbour==node)continue;
                         if (edges.containsKey(neighbour)){
-                            Iterator<Edge> edgeIterator = edges.get(neighbour).iterator();
-                            while(edgeIterator.hasNext()){
-                                Edge edge = edgeIterator.next();
-                                if (edge.getTarget().equals(node)){
-                                    edgeIterator.remove();
-                                }
-                            }
+                            edges.get(neighbour).removeIf(edge -> edge.getTarget().equals(node));
                         }
                     }
                 }

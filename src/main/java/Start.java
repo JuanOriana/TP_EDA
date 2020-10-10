@@ -135,7 +135,7 @@ public class Start {
       lineNodes.remove(toAdd);
 
       double dist = toAdd.eculideanDistance(last);
-      if (isSubway || isPremetro || isTrain) dist=dist/1.75;
+      if (isSubway || isPremetro || isTrain) dist=dist*0.75;
 
       graph.insertEdge(toAdd,new Edge(last,dist*1000));
       graph.insertEdge(last,new Edge(toAdd,dist*1000));
