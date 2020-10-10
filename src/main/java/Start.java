@@ -91,16 +91,20 @@ public class Start {
     for (String line : subMap.keySet()){
       loadLine(graph,subMap.get(line),line,-1, -1, startPoints);
     }
+    loadLine(graph,fillPremetro(),"PREMETRO", -1, 0, startPoints);
     graph.connectLines();
   }
 
   public static void loadLine(Graph graph,Set<Node> lineNodes,String subLine, int routeId, int directionId, LineStartPoints startPoints ){
     boolean isSubway = routeId == -1 && (directionId == -1);
-    if (!isSubway && (routeId < 0 || directionId < 0 )|| lineNodes.size() <= 0) return;
+    boolean isPremetro = routeId == -1 && (directionId == 0);
+    if (!isPremetro && !isSubway && (routeId < 0 || directionId < 0 )|| lineNodes.size() <= 0) return;
     // Busco el primer punto del recorrido
     MapPoint startPoint;
     if (isSubway){
       startPoint = startPoints.parseSubway(subLine);
+    }else if(isPremetro){
+      startPoint = lineNodes.iterator().next().getCoordinates();
     }else{
       startPoint = startPoints.parseRoute(routeId, directionId);
     }
@@ -120,7 +124,7 @@ public class Start {
       lineNodes.remove(toAdd);
 
       double dist = toAdd.eculideanDistance(last);
-      if (isSubway) dist=dist/1.75;
+      if (isSubway || isPremetro) dist=dist/1.75;
 
       graph.insertEdge(toAdd,new Edge(last,dist*1000));
       graph.insertEdge(last,new Edge(toAdd,dist*1000));
@@ -142,5 +146,20 @@ public class Start {
       subMap.get(line).add(new Node(line, new MapPoint(lat, lng)));
     }
     in.close();
+  }
+  public static HashSet<Node> fillPremetro() throws IOException {
+    HashSet<Node> premetroSet = new HashSet<>();
+    String fileName = "/estaciones-premetro.csv";
+    InputStream is = Start.class.getResourceAsStream(fileName);
+    Reader in = new InputStreamReader(is);
+    Iterable<CSVRecord> records = CSVFormat.DEFAULT
+            .withFirstRecordAsHeader()
+            .parse(in);
+    for (CSVRecord record : records){
+      premetroSet.add(new Node("PREMETRO",
+              new MapPoint(Double.parseDouble(record.get("lat")),Double.parseDouble(record.get("long")))));
+    }
+    in.close();
+    return premetroSet;
   }
 }
