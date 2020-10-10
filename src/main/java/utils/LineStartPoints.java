@@ -17,6 +17,7 @@ import java.util.Map;
 public class LineStartPoints {
 	Map<Pair<Integer, Integer>, MapPoint> parseMap = new HashMap<>();
 	Map<String, MapPoint> subwayParse = new HashMap<>();
+	Map<String, MapPoint> trainParse = new HashMap<>();
 
 	public LineStartPoints() throws IOException {
 		createParse();
@@ -27,6 +28,9 @@ public class LineStartPoints {
 	}
 	public MapPoint parseSubway(String line){
 		return subwayParse.get(line);
+	}
+	public MapPoint parseTrains(String line){
+		return trainParse.get(line);
 	}
 
 	private void createParse() throws IOException {
@@ -49,20 +53,30 @@ public class LineStartPoints {
 					match = 1;
 				}
 			}
-
 		}
 		in.close();
+
 		String fileNameSub = "/terminales-de-subte.csv";
 		InputStream su = LineStartPoints.class.getResourceAsStream(fileNameSub);
 		Reader reader = new InputStreamReader(su);
-		Iterable<CSVRecord> headers = CSVFormat.DEFAULT
+		Iterable<CSVRecord> records1 = CSVFormat.DEFAULT
 				.withFirstRecordAsHeader().parse(reader);
-		for (CSVRecord subway : headers){
+		for (CSVRecord subway : records1){
 			String line = subway.get("linea");
-			lat = subway.get("lat");
-			lng = subway.get("long");
-			subwayParse.putIfAbsent(line, new MapPoint(Double.parseDouble(lat),Double.parseDouble(lng)));
+			subwayParse.putIfAbsent(line,
+					new MapPoint(Double.parseDouble(subway.get("lat")),Double.parseDouble(subway.get("long"))));
 		}
 		reader.close();
+
+		String fileNameTr = "/terminales-de-trenes-capital.csv";
+		InputStream tr = LineStartPoints.class.getResourceAsStream(fileNameTr);
+		Reader reader1 = new InputStreamReader(tr);
+		Iterable<CSVRecord> records2 = CSVFormat.DEFAULT
+				.withFirstRecordAsHeader().parse(reader1);
+		for (CSVRecord record: records2){
+			String train = record.get("ramal");
+			trainParse.putIfAbsent(train,
+					new MapPoint(Double.parseDouble(record.get("lat")),Double.parseDouble(record.get("long"))));
+		}
 	}
 }

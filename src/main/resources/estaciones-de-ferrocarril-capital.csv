@@ -1,0 +1,36 @@
+long,lat,id,nombre,linea,linea_2,ramal,barrio,comuna
+-58.4249824,-34.5717485,1,3 de Febrero,Mitre,F.C.G.B.M.,Retiro – Mitre,Palermo,Comuna 14
+-58.376129,-34.5899757,332,Retiro LM,Mitre,F.C.G.B.M.,Retiro – Mitre,Retiro,Comuna 1
+-58.4618081,-34.5680506,35,Belgrano R,Mitre,F.C.G.B.M.,Retiro – Mitre,Belgrano,Comuna 13
+-58.4753485,-34.5652607,90,Coghlan,Mitre,F.C.G.B.M.,Retiro – Mitre,Coghlan,Comuna 12
+-58.448253,-34.5729746,91,Colegiales,Mitre,F.C.G.B.M.,Retiro – Mitre,Colegiales,Comuna 13
+-58.435404,-34.575705,272,Ministro Carranza,Mitre,F.C.G.B.M.,Retiro – Mitre,Palermo,Comuna 14
+-58.4870632,-34.5540735,346,Saavedra,Mitre,F.C.G.B.M.,Retiro – Mitre,Saavedra,Comuna 12
+-58.4489445,-34.5588016,34,Belgrano C,Mitre,F.C.G.R.,Retiro - Tigre,Belgrano,Comuna 13
+-58.4628516,-34.5482911,287,Núñez,Mitre,F.C.G.R.,Retiro - Tigre,Nu\u00f1ez,Comuna 13
+-58.376129,-34.5899757,332,Retiro LM,Mitre,F.C.G.R.,Retiro - Tigre,Retiro,Comuna 1
+-58.4680326,-34.5365204,337,Rivadavia,Mitre,F.C.G.R.,Retiro - Tigre,Nu\u00f1ez,Comuna 13
+-58.4199555,-34.6481153,121,Dr. Sáenz,Belgrano Sur,F.C.G.R.,Buenos Aires - M.C.G. Belgrano,Nueva Pompeya,Comuna 4
+-58.4502223,-34.6661376,313,Presidente Illia,Belgrano Sur,F.C.G.R.,Buenos Aires - M.C.G. Belgrano,Villa Soldati,Comuna 8
+-58.4769699,-34.67713,422,Villa Lugano,Belgrano Sur,F.C.G.R.,Buenos Aires - M.C.G. Belgrano,Villa Lugano,Comuna 8
+-58.4408973,-34.6622014,427,Villa Soldati,Belgrano Sur,F.C.G.R.,Buenos Aires - M.C.G. Belgrano,Villa Soldati,Comuna 8
+-58.5124313,-34.6026515,112,Devoto,San Martin,F.C.G.R.,Retiro (LSM) - Cabred,Villa Devoto,Comuna 11
+-58.4935315,-34.6013699,415,Villa del Parque,San Martin,F.C.G.R.,Retiro (LSM) - Cabred,Villa Del Parque,Comuna 11
+-58.4274154,-34.5796614,297,Palermo,San Martin,F.C.G.R.,Retiro (LSM) - Cabred,Palermo,Comuna 14
+-58.3756885,-34.5881302,463,Retiro LSM,San Martin,F.C.G.R.,Retiro (LSM) - Cabred,Retiro,Comuna 1
+-58.4436522,-34.6192442,50,Caballito,Sarmiento,F.C.G.R.,Once – Moreno,Caballito,Comuna 6
+-58.4661766,-34.6278504,139,Flores,Sarmiento,F.C.G.R.,Once – Moreno,Flores,Comuna 7
+-58.4808913,-34.6323755,140,Floresta,Sarmiento,F.C.G.R.,Once – Moreno,Floresta,Comuna 10
+-58.5263409,-34.6388728,234,Liniers,Sarmiento,F.C.G.R.,Once – Moreno,Liniers,Comuna 9
+-58.4088675,-34.6086496,293,Once,Sarmiento,F.C.G.R.,Once – Moreno,Balvanera,Comuna 3
+-58.5021311,-34.6362494,423,Villa Luro,Sarmiento,F.C.G.R.,Once – Moreno,Villa Luro,Comuna 10
+-58.4618081,-34.5680506,35,Belgrano R,Mitre,F.C.G.R.,Retiro - J. L. Suárez,Belgrano,Comuna 13
+-58.4878391,-34.574712,150,General Urquiza,Mitre,F.C.G.R.,Retiro - J. L. Suárez,Villa Urquiza,Comuna 12
+-58.4789912,-34.5684173,236,L. M. Drago,Mitre,F.C.G.R.,Retiro - J. L. Suárez,Villa Urquiza,Comuna 12
+-58.501898,-34.5804962,318,Pueyrredón,Mitre,F.C.G.R.,Retiro - J. L. Suárez,Villa Pueyrredon,Comuna 12
+-58.455278,-34.586944,,Federico Lacroze,Urquiza,F.C.G.U,Lacroze - Lemos,Chacarita,Comuna 15
+-58.4664,-34.5902,,Jose Artigas,Urquiza,F.C.G.U,Lacroze - Lemos,Chacarita,Comuna 15
+-58.4761,-34.5925,,Pedro N. Arata,Urquiza,F.C.G.U,Lacroze - Lemos,Agronomia,Comuna 15
+-58.4944,-34.5932,,Dr. Francisco Beiro,Urquiza,F.C.G.U,Lacroze - Lemos,Agronomia,Comuna 15
+-58.5031,-34.5945,,El Libertador,Urquiza,F.C.G.U,Lacroze - Lemos,Villa Devoto,Comuna 11
+-58.5106,-34.5956,,Antonio Devoto,Urquiza,F.C.G.U,Lacroze - Lemos,Villa Devoto,Comuna 11
