@@ -18,7 +18,7 @@ public class Start {
       setUp(graph);
       controller = new Controller(); //TODO: El controller deberia recibir el grafo como parametro
     }catch (IOException e){
-      System.err.println("Error durante la lectura de los archivos csv: " + e.getMessage());
+      System.err.println("Invalid csv files: " + e.getMessage());
       return;
     }
     cors();
@@ -77,7 +77,6 @@ public class Start {
       newRoute= Integer.parseInt(record.get("route_id"));
       // Una vez que cambie de linea, cambio la que llevo acumulada el el lineNodes buffer
       if (newRoute!=routeId||newDirection!=directionId){
-        //System.out.println("NUEVA LINEA: " + record.get("route_short_name"));
         loadLine(graph,lineNodes,"",routeId,directionId,startPoints);
         lineNodes = new HashSet<>();
         directionId=newDirection;
@@ -85,8 +84,7 @@ public class Start {
       }
       lineNodes.add(new Node(record.get("route_short_name"),new MapPoint(Double.parseDouble(record.get("stop_lat")),Double.parseDouble(record.get("stop_lon")))));
     }
-    //Siempre queda una linea extra al final
-    loadLine(graph,lineNodes,"",routeId,directionId,startPoints);
+    loadLine(graph,lineNodes,"",routeId,directionId,startPoints); //Siempre queda una linea extra al final
 
     HashMap<String, HashSet<Node>> subMap = new HashMap<>();
     fillSubwayMap(subMap);
@@ -97,12 +95,13 @@ public class Start {
   }
 
   public static void loadLine(Graph graph,Set<Node> lineNodes,String subLine, int routeId, int directionId, LineStartPoints startPoints ){
-    if (routeId < -1 || directionId < -1 || lineNodes.size() <= 0) return; //-1 es el id reservado para los subtes
+    boolean isSubway = routeId == -1 && (directionId == -1);
+    if (!isSubway && (routeId < 0 || directionId < 0 )|| lineNodes.size() <= 0) return;
     // Busco el primer punto del recorrido
     MapPoint startPoint;
-    if (routeId== -1 || directionId== -1){
+    if (isSubway){
       startPoint = startPoints.parseSubway(subLine);
-    }else {
+    }else{
       startPoint = startPoints.parseRoute(routeId, directionId);
     }
     Node last = Graph.closestToPoint(startPoint,lineNodes);
@@ -121,7 +120,7 @@ public class Start {
       lineNodes.remove(toAdd);
 
       double dist = toAdd.eculideanDistance(last);
-      if (routeId==-1) dist=dist/2;
+      if (isSubway) dist=dist/1.75;
 
       graph.insertEdge(toAdd,new Edge(last,dist*1000));
       graph.insertEdge(last,new Edge(toAdd,dist*1000));
@@ -132,9 +131,9 @@ public class Start {
   public static void fillSubwayMap(HashMap<String, HashSet<Node>> subMap) throws IOException {
     String fileNameSub = "/estaciones-de-subte.csv";
     InputStream su = LineStartPoints.class.getResourceAsStream(fileNameSub);
-    Reader iS = new InputStreamReader(su);
+    Reader in = new InputStreamReader(su);
     Iterable<CSVRecord> headers = CSVFormat.DEFAULT
-            .withFirstRecordAsHeader().parse(iS);
+            .withFirstRecordAsHeader().parse(in);
     for (CSVRecord subway : headers){
       String line = subway.get("linea");
       Double lat = Double.parseDouble(subway.get("lat"));
@@ -142,6 +141,6 @@ public class Start {
       subMap.putIfAbsent(line, new HashSet<>());
       subMap.get(line).add(new Node(line, new MapPoint(lat, lng)));
     }
-    iS.close();
+    in.close();
   }
 }

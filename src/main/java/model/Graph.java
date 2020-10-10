@@ -1,5 +1,6 @@
 package model;
 import java.util.*;
+import java.util.concurrent.RejectedExecutionException;
 
 public class Graph {
     public HashSet<Node> nodes = new HashSet<>(); //A ser remplazado con la data-struct correspondiente.
@@ -45,7 +46,7 @@ public class Graph {
     }
 
     public List<BusInPath> findPath(MapPoint start, MapPoint target) {
-        List<BusInPath> bussesList = new LinkedList<>();
+        List<BusInPath> bussesList = null;
         Node n1 = new Node("START", start);
         Node n2 = new Node("END", target);
         if (insertNode(n1) && insertNode(n2)) {
@@ -54,22 +55,21 @@ public class Graph {
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
             //printDijkstra(n1, n2);
-            bussesList.addAll(searchDijkstra(n1, n2));
+            bussesList=searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
-        } else System.out.println("could not insert start oder target");
-        if (bussesList.size()==1 &&
+        } else throw new RejectedExecutionException("Failed to ascertain the coordinates of origin and target");
+        if (bussesList!= null && bussesList.size()==1 &&
                 bussesList.get(0).fromLat==bussesList.get(0).toLat &&
                     bussesList.get(0).fromLng==bussesList.get(0).toLng) bussesList.clear();
         return bussesList;
     }
 
-    List<BusInPath> searchDijkstra (Node start, Node end){
+    public List<BusInPath> searchDijkstra (Node start, Node end){
         LinkedList<BusInPath> bussesList = new LinkedList<>();
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
-            System.out.println("please send valid nodes next time thx");
-            return bussesList;
+            throw new IllegalArgumentException("The coordinates of origin or target are not contained in the valid map zone");
         }
 
         settled = new HashSet<>();
@@ -87,7 +87,7 @@ public class Graph {
                 found = true;
                 break;
             }
-            if (edges.get(node)==null) System.out.println(node.getLine());
+            if (edges.get(node)==null) throw new RuntimeException(); //no estoy muy segura que tirar aca o si hace falta
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
@@ -102,14 +102,13 @@ public class Graph {
             node = parents.get(node); //no interesa el nodo END para el recorrido
             Node previous = node;
             while (node != null && !node.equals(start)){
-                Node lastVisitedNode = node;
-                node = parents.get(node);
-                if (node !=null && !node.getLine().equals(lastVisitedNode.getLine())){ //si cambie de linea
+                if (parents.get(node) !=null && !parents.get(node).getLine().equals(node.getLine())){ //si cambie de linea
                     bussesList.addFirst(new BusInPath(previous.getLine(),
-                            previous.getCoordinates().getLat(), previous.getCoordinates().getLong(),
-                                lastVisitedNode.getCoordinates().getLat(), lastVisitedNode.getCoordinates().getLong()));
-                    previous = node;
+                            node.getCoordinates().getLat(), node.getCoordinates().getLong(),
+                                previous.getCoordinates().getLat(), previous.getCoordinates().getLong()));
+                    previous = parents.get(node);
                 }
+                node = parents.get(node);
             }
         }
         return bussesList;
