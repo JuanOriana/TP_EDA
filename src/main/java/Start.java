@@ -171,7 +171,7 @@ public class Start {
 
   public static void loadTrainLines(Graph graph, LineStartPoints startPoints) throws IOException {
     HashSet<Node> trainSet = new HashSet<>();
-    String fileName = "/estaciones-de-ferrocarril-capital.csv";
+    String fileName = "/estaciones-de-ferrocarril.csv";
     InputStream is = Start.class.getResourceAsStream(fileName);
     Reader in = new InputStreamReader(is);
     Iterable<CSVRecord> records = CSVFormat.DEFAULT
@@ -185,6 +185,8 @@ public class Start {
       line = record.get("linea");
       if (!name.equals(train)){
         startPoint = startPoints.parseTrains(train);
+        System.out.print(train+" ");
+        System.out.println(startPoint);
         loadLine(graph,trainSet,name,0, first, startPoint);
         trainSet.clear();
         first=-1;
