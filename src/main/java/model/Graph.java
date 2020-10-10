@@ -55,11 +55,10 @@ public class Graph {
             Pair<Integer, Integer> targetCoords = getMatrixCoords(target);
             connectNodeToMatrixNodes(n1,startCoords.getElem2(), startCoords.getElem1(),true);
             connectNodeToMatrixNodes(n2,targetCoords.getElem2(), targetCoords.getElem1(),true);
-            //printDijkstra(n1, n2);
             bussesList=searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
-        } else throw new RejectedExecutionException("Failed to ascertain the coordinates of origin and target");
+        } else throw new RuntimeException("Failed to ascertain the coordinates of origin and target");
         bussesList.removeIf(coords -> coords.fromLng == coords.toLng &&
                 coords.fromLat == coords.toLat);
         return bussesList;
@@ -69,7 +68,7 @@ public class Graph {
         LinkedList<BusInPath> bussesList = new LinkedList<>();
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
-            throw new IllegalArgumentException("The coordinates of origin or target are not contained in the valid map zone");
+            throw new RuntimeException("The coordinates of origin or target are not contained in the valid map zone");
         }
 
         settled = new HashSet<>();
@@ -91,7 +90,7 @@ public class Graph {
                 break;
             }
             //ESTO DA NULL SI NODE NO TIENE EDGES
-            if (edges.get(node)==null) throw new RuntimeException("Impossible to reach"); //no estoy muy segura que tirar aca o si hace falta
+            if (edges.get(node)==null) break; //no estoy muy segura que tirar aca o si hace falta
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
                 double targetNodeCost = distances.get(node) + edge.getDist();
@@ -117,55 +116,6 @@ public class Graph {
         }
         return bussesList;
     }
-
-    @Deprecated
-    void printDijkstra(Node start, Node end) {
-        boolean found = false;
-        if (!nodes.contains(start) || !nodes.contains(end)) {
-            System.out.println("please send valid nodes next time thx");
-            return;
-        }
-
-        settled = new HashSet<>();
-        unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
-        nodes.forEach(node -> distances.put(node, Double.MAX_VALUE));
-        distances.put(start, 0.0);
-        unsettled.add(start);
-        Node node = null;
-        while (!unsettled.isEmpty()) {
-            node = unsettled.remove();
-            if (distances.get(node) == Double.MAX_VALUE) break;
-            if (settled.contains(node)) continue;
-            settled.add(node);
-            if (node.equals(end)) {
-                found = true;
-                break;
-            }
-            //null pointer
-            if (edges.get(node)==null) System.out.println(node.getLine());
-            for (Edge edge : edges.get(node)) {
-                if (settled.contains(edge.getTarget())) continue;
-                double targetNodeCost = distances.get(node) + edge.getDist();
-                if (targetNodeCost < distances.get(edge.getTarget())) {
-                    parents.put(edge.getTarget(), node);
-                    distances.put(edge.getTarget(), targetNodeCost);
-                    unsettled.add(edge.getTarget());
-                }
-            }
-        }
-        if (found) {
-            while (node != null && !node.equals(start)) {
-                System.out.println(node.getLine()+" "+node.getCoordinates());
-               // double dist = Double.POSITIVE_INFINITY;
-                node = parents.get(node);
-            }
-            System.out.println();
-        }else {
-            System.out.println(settled);
-            System.out.println("not found :(");
-        }
-    }
-
 
     //Dado un set de nodos y una coordenada espacial, encuentro el mas cercano
     public static Node closestToPoint(MapPoint coord, Set<Node> set) {
@@ -257,7 +207,7 @@ public class Graph {
                         if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
                             double dist = node.eculideanDistance(neighbor) * 1000;
                             if (!isWalking) {
-                                dist *= CONNECT_PENAL;
+                                //dist *= CONNECT_PENAL;
                                 dist += CONNECT_PENAL_ADDITIVE;
                             }
                             Edge newEdge = new Edge(neighbor, dist);

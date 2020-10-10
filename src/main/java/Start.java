@@ -16,7 +16,7 @@ public class Start {
     try {
       graph = new Graph();
       setUp(graph);
-      controller = new Controller(); //TODO: El controller deberia recibir el grafo como parametro
+      controller = new Controller(graph);
     }catch (IOException e){
       System.err.println("Invalid csv files: " + e.getMessage());
       return;
@@ -29,7 +29,7 @@ public class Start {
       double toLat = Double.parseDouble(req.queryParams("toLat"));
       double toLng = Double.parseDouble(req.queryParams("toLng"));
 
-      return controller.findPath(graph, fromLat, fromLng, toLat, toLng);
+      return controller.findPath(fromLat, fromLng, toLat, toLng);
     }, json());
     get("/place", (req, res) -> {
       String searchTerm = req.queryParams("searchTerm");
