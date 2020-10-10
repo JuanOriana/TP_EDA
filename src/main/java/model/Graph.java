@@ -16,7 +16,8 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL_ADDITIVE = 10;
+    private static final double CONNECT_PENAL_ADDITIVE = 2;
+    private static final double CONNECT_PENAL = 4;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
 
@@ -206,6 +207,7 @@ public class Graph {
                         if (!node.getLine().equals(neighbor.getLine()) && !node.equals(neighbor)) {
                             double dist = node.eculideanDistance(neighbor) * 1000;
                             if (!isWalking) {
+                                dist *= CONNECT_PENAL;
                                 dist += CONNECT_PENAL_ADDITIVE;
                             }
                             Edge newEdge = new Edge(neighbor, dist);
