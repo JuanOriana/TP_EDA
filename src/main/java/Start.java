@@ -69,7 +69,7 @@ public class Start {
     Iterable<CSVRecord> records = CSVFormat.DEFAULT
             .withFirstRecordAsHeader()
             .parse(in);
-    int routeId=-1, directionId=-1, newRoute, newDirection;
+    int routeId=-2, directionId=-2, newRoute, newDirection;
     LineStartPoints startPoints = new LineStartPoints();
     HashSet<Node> lineNodes = new HashSet<>();
     for (CSVRecord record : records){
@@ -91,15 +91,8 @@ public class Start {
     for (String line : subMap.keySet()){
       loadLine(graph,subMap.get(line),line,-1, -1, startPoints);
     }
-
-    loadLine(graph,fillPremetro(),"PREMETRO", -1, 0, startPoints);
-
-    HashMap<String, HashSet<Node>> trainMap = new HashMap<>();
-    fillTrainMap(trainMap);
-    for (String line : trainMap.keySet()){
-      loadLine(graph,trainMap.get(line),line,0, -1, startPoints);
-    }
-
+    loadPremetroLine(graph,startPoints);
+    loadTrainLines(graph,startPoints);
     graph.connectLines();
   }
 
@@ -143,7 +136,9 @@ public class Start {
       last=toAdd;
     }
   }
+
   public static void fillSubwayMap(HashMap<String, HashSet<Node>> subMap) throws IOException {
+    //el csv de subtes esta desordenado, si o si necesito un mapa para obtener las paradas en orden
     String fileNameSub = "/estaciones-de-subte.csv";
     InputStream su = LineStartPoints.class.getResourceAsStream(fileNameSub);
     Reader in = new InputStreamReader(su);
@@ -159,7 +154,7 @@ public class Start {
     in.close();
   }
 
-  public static HashSet<Node> fillPremetro() throws IOException {
+  public static void loadPremetroLine(Graph graph, LineStartPoints startPoints) throws IOException {
     HashSet<Node> premetroSet = new HashSet<>();
     String fileName = "/estaciones-premetro.csv";
     InputStream is = Start.class.getResourceAsStream(fileName);
@@ -171,22 +166,32 @@ public class Start {
       premetroSet.add(new Node("PREMETRO",
               new MapPoint(Double.parseDouble(record.get("lat")),Double.parseDouble(record.get("long")))));
     }
+    loadLine(graph,premetroSet,"PREMETRO", -1, 0, startPoints);
     in.close();
-    return premetroSet;
   }
-  public static void fillTrainMap(HashMap<String, HashSet<Node>> trainMap) throws IOException {
+
+  public static void loadTrainLines(Graph graph, LineStartPoints startPoints) throws IOException {
+    HashSet<Node> trainSet = new HashSet<>();
     String fileName = "/estaciones-de-ferrocarril-capital.csv";
     InputStream is = Start.class.getResourceAsStream(fileName);
     Reader in = new InputStreamReader(is);
     Iterable<CSVRecord> records = CSVFormat.DEFAULT
             .withFirstRecordAsHeader()
             .parse(in);
+    String name = "",line;
+    int first = -2;
     for (CSVRecord record : records){
       String train = record.get("ramal");
-      trainMap.putIfAbsent(train, new HashSet<>());
-      trainMap.get(train).add(new Node(train,
-              new MapPoint(Double.parseDouble(record.get("lat")), Double.parseDouble(record.get("long")))));
+      line = record.get("linea");
+      if (!name.equals(train)){
+        loadLine(graph,trainSet,name,0, first, startPoints);
+        trainSet.clear();
+        first=-1;
+        name = train;
+      }
+      trainSet.add(new Node(line, new MapPoint(Double.parseDouble(record.get("lat")), Double.parseDouble(record.get("long")))));
     }
+    loadLine(graph,trainSet,name,0, first, startPoints);
     in.close();
   }
 }
