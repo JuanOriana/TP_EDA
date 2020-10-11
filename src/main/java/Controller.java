@@ -20,7 +20,6 @@ public class Controller {
 
   public List<BusInPath> findPath(double fromLat, double fromLng, double toLat, double toLng) {
      return graph.findPath(new MapPoint(fromLat, fromLng), new MapPoint(toLat, toLng));
-   // return Arrays.asList(new BusInPath("Sweet home Alabama! xD", 0, 0, 0, 0));
   }
 
   public List<PlaceLocation> findPlaces(String searchTerm) {

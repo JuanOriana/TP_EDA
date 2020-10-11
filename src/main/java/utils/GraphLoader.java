@@ -18,6 +18,7 @@ import java.util.Set;
 public class GraphLoader {
 
     public static void loadLine(Graph graph, Set<Node> lineNodes, int routeId, int directionId, MapPoint startPoint){
+        if (lineNodes.isEmpty()) return;
         boolean isNotBus = false;
         if ((routeId==-1 || routeId==0) && (directionId ==-1 || directionId==0)) isNotBus=true;
         if ((routeId < -1 && directionId < -1) || lineNodes.size() <= 0) return;
@@ -70,8 +71,9 @@ public class GraphLoader {
             }
             lineNodes.add(new Node(record.get("route_short_name"),new MapPoint(Double.parseDouble(record.get("stop_lat")),Double.parseDouble(record.get("stop_lon")))));
         }
+        //Siempre queda una linea extra al final
         startPoint = startPoints.parseRoute(routeId, directionId);
-        loadLine(graph,lineNodes,routeId,directionId,startPoint); //Siempre queda una linea extra al final
+        loadLine(graph,lineNodes,routeId,directionId,startPoint);
     }
 
     public static void loadSubwayLines(Graph graph, LineStartPoints startPoints) throws IOException {

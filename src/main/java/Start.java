@@ -61,10 +61,10 @@ public class Start {
     graph.setMinAndMaxLong((-59.82785 - 0.01), (-57.730346999999995 + 0.01));
     LineStartPoints startPoints = new LineStartPoints();
 
-    loadBusLines(graph, startPoints);
-    loadSubwayLines(graph,startPoints);
-    loadPremetroLine(graph);
-    loadTrainLines(graph,startPoints);
+    GraphLoader.loadBusLines(graph, startPoints);
+    GraphLoader.loadSubwayLines(graph,startPoints);
+    GraphLoader.loadPremetroLine(graph);
+    GraphLoader.loadTrainLines(graph,startPoints);
 
     graph.connectLines();
 

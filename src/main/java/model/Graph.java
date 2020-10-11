@@ -7,8 +7,6 @@ public class Graph {
     public HashMap<Node, Set<Edge>> edges = new HashMap<>();
     private HashMap<Node, Double> distances = new HashMap<>();
     private Map<Node, Node> parents = new HashMap<>();
-    private HashSet<Node> settled;
-    private PriorityQueue<Node> unsettled;
 
     private double minLat = 0;
     private double maxLat = 0;
@@ -16,7 +14,7 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL_ADDITIVE = 2;
+    private static final double CONNECT_PENAL_ADDITIVE = 0.5;
     private static final double CONNECT_PENAL = 4;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
@@ -71,8 +69,8 @@ public class Graph {
             throw new RuntimeException("The coordinates of origin or target are not contained in the valid map zone");
         }
 
-        settled = new HashSet<>();
-        unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
+        HashSet<Node> settled = new HashSet<>();
+        PriorityQueue<Node> unsettled = new PriorityQueue<>(Comparator.comparingDouble(o -> distances.get(o)));
         nodes.forEach(node -> distances.put(node, Double.MAX_VALUE)); //O(n)
         distances.put(start, 0.0);
         unsettled.add(start);
@@ -89,7 +87,6 @@ public class Graph {
                 found = true;
                 break;
             }
-            //ESTO DA NULL SI NODE NO TIENE EDGES
             if (edges.get(node)==null) break;
             for (Edge edge : edges.get(node)) {
                 if (settled.contains(edge.getTarget())) continue;
@@ -97,6 +94,11 @@ public class Graph {
                 if (targetNodeCost < distances.get(edge.getTarget())) {
                     parents.put(edge.getTarget(), node);
                     distances.put(edge.getTarget(), targetNodeCost);
+                    /*
+                    Lo ideal seria eliminarlo antes de anadirlo, sin embargo, el comparador de la priorityqueue complica esto
+                    (No puedo usar el equals del nodo). Por esto se decidio no eliminarlo (Ocupa un poco mas de espacio pero
+                    es mas rapido en runtime).
+                     */
                     unsettled.add(edge.getTarget());
                 }
             }

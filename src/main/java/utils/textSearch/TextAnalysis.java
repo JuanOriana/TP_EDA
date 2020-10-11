@@ -31,7 +31,6 @@ public class TextAnalysis {
 
         for (CSVRecord record : records) {
             String value = record.get("establecimiento");
-            //String barrio = record.get("barrio");
             double lng = Double.parseDouble(record.get("longitud"));
             double lat = Double.parseDouble(record.get("latitud"));
             int id = Integer.parseInt(record.get("id"));
@@ -47,7 +46,8 @@ public class TextAnalysis {
     public List<PlaceLocation> getSimilaritiesList (String searchTerm, int similAmount){
         searchTerm=searchTerm.toUpperCase();
         HashMap<Integer, Integer> placeLocationMap = new HashMap<>();
-        TreeMap<Integer,ArrayList<Integer>> placeLocationTree = new TreeMap<>(Comparator.reverseOrder());
+        TreeMap<Integer,ArrayList<Integer>> placeLocationTree = new TreeMap<>(Comparator.reverseOrder()); //Busco las palabras con MAS comparaciones
+        //Busco por cada qgrama cuales palabras de las preprocesadas coinciden
         for (String qGrams: new QGram(QGRAM_LENGTH).createToken(searchTerm).keySet()) {
             if (!tokenMap.containsKey(qGrams)) continue;
             for (Integer id: tokenMap.get(qGrams)) {
@@ -58,6 +58,7 @@ public class TextAnalysis {
             }
         }
 
+        // Mi lista de resultados son las palabras con mayor cantidad de qgramas compartidos!
         List<PlaceLocation> result = new ArrayList<>();
         for (Integer reps : placeLocationTree.keySet()){
             for (Integer id : placeLocationTree.get(reps)){
