@@ -1,0 +1,128 @@
+long,lat,id,nombre,linea,linea_2,ramal,barrio,comuna,localidad,partido
+-58.4249824,-34.5717485,1,3 de Febrero,Mitre,F.C.G.B.M.,Retiro – Mitre,Palermo,Comuna 14,,
+-58.4618081,-34.5680506,35,Belgrano R,Mitre,F.C.G.B.M.,Retiro – Mitre,Belgrano,Comuna 13,,
+-58.376129,-34.5899757,332,Retiro LM,Mitre,F.C.G.B.M.,Retiro – Mitre,Retiro,Comuna 1,,
+-58.4753485,-34.5652607,90,Coghlan,Mitre,F.C.G.B.M.,Retiro – Mitre,Coghlan,Comuna 12,,
+-58.448253,-34.5729746,91,Colegiales,Mitre,F.C.G.B.M.,Retiro – Mitre,Colegiales,Comuna 13,,
+-58.49413,-34.5230887,119,Dr. Cetrángolo,Mitre,F.C.G.B.M.,Retiro – Mitre,,,Florida,Vicente L\u00f3pez
+-58.4944563,-34.5304745,141,Florida,Mitre,F.C.G.B.M.,Retiro – Mitre,,,Florida,Vicente L\u00f3pez
+-58.494657,-34.5425501,200,Juan B. Justo,Mitre,F.C.G.B.M.,Retiro – Mitre,,,Florida,Vicente L\u00f3pez
+-58.435404,-34.575705,272,Ministro Carranza,Mitre,F.C.G.B.M.,Retiro – Mitre,Palermo,Comuna 14,,
+-58.4896092,-34.5154718,273,Mitre,Mitre,F.C.G.B.M.,Retiro – Mitre,,,Olivos,Vicente L\u00f3pez
+-58.4870632,-34.5540735,346,Saavedra,Mitre,F.C.G.B.M.,Retiro – Mitre,Saavedra,Comuna 12,,
+-58.5038385,-34.4800686,5,Acassuso,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Acassuso,San Isidro
+-58.5265437,-34.4608043,32,Béccar,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Beccar,San Isidro
+-58.4489445,-34.5588016,34,Belgrano C,Mitre,F.C.G.B.M.,Retiro - Tigre,Belgrano,Comuna 13,,
+-58.5674401,-34.4375361,65,Carupá,Mitre,F.C.G.B.M.,Retiro - Tigre,,,San Fernando,San Fernando
+-58.4884466,-34.4975978,212,La Lucila,Mitre,F.C.G.B.M.,Retiro - Tigre,,,La Lucila,Vicente L\u00f3pez
+-58.4965804,-34.4885346,262,Martínez,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Mart\u00ednez,San Isidro
+-58.4628516,-34.5482911,287,Núñez,Mitre,F.C.G.B.M.,Retiro - Tigre,Nu\u00f1ez,Comuna 13,,
+-58.4806636,-34.5077139,291,Olivos,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Olivos,Vicente L\u00f3pez
+-58.376129,-34.5899757,332,Retiro LM,Mitre,F.C.G.B.M.,Retiro - Tigre,Retiro,Comuna 1,,
+-58.4680326,-34.5365204,337,Rivadavia,Mitre,F.C.G.B.M.,Retiro - Tigre,Nu\u00f1ez,Comuna 13,,
+-58.5587407,-34.4443381,355,San Fernando C,Mitre,F.C.G.B.M.,Retiro - Tigre,,,San Fernando,San Fernando
+-58.5133831,-34.4722074,357,San Isidro C,Mitre,F.C.G.B.M.,Retiro - Tigre,,,San Isidro,San Isidro
+-58.5817289,-34.423567,389,Tigre,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Tigre,Tigre
+-58.4728065,-34.5247233,408,Vicente López,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Vicente L\u00f3pez,Vicente L\u00f3pez
+-58.5411284,-34.4561533,409,Victoria,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Victoria,San Fernando
+-58.5507001,-34.4506827,428,Virreyes,Mitre,F.C.G.B.M.,Retiro - Tigre,,,Virreyes,San Fernando
+-58.5141386,-34.7106549,12,Aldo Bonzi,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Aldo Bonzi,La Matanza
+-58.4199555,-34.6481153,121,Dr. Sáenz,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,Nueva Pompeya,Comuna 4,,
+-58.5879899,-34.7044639,184,Isidro Casanova,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Isidro Casanova,La Matanza
+-58.537256,-34.710762,195,José Ingenieros,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Ciudad Evita,La Matanza
+-58.5519393,-34.708965,203,Justo Villegas,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Ciudad Evita,La Matanza
+-58.6861877,-34.6921774,232,Libertad,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Libertad,Merlo
+-58.7307061,-34.7086815,259,Marinos C. G. Belgrano,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Parque San Mart\u00edn,Merlo
+-58.5076299,-34.6901777,260,Marinos del Fournier,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Villa Madero,La Matanza
+-58.6462658,-34.6971714,270,Merlo Gómez,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Castelar,Mor\u00f3n
+-58.4502223,-34.6661376,313,Presidente Illia,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,Villa Soldati,Comuna 8,,
+-58.6261936,-34.6996965,325,Rafael Castillo,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Rafael Castillo,La Matanza
+-58.5238732,-34.7124465,354,Sánchez de Mendeville,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Aldo Bonzi,La Matanza
+-58.5115373,-34.7025293,385,Tapiales,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Aldo Bonzi,La Matanza
+-58.4769699,-34.67713,422,Villa Lugano,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,Villa Lugano,Comuna 8,,
+-58.4925366,-34.6840978,424,Villa Madero,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,,,Villa Madero,La Matanza
+-58.4408973,-34.6622014,427,Villa Soldati,Belgrano Sur,F.C.G.B.,Buenos Aires - M.C.G. Belgrano,Villa Soldati,Comuna 8,,
+-58.3954246,-34.7436106,30,Banfield,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Banfield,Lomas de Zamora
+-58.3382367,-34.80118,85,Claypole,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Claypole,Almirante Brown
+-58.3048296,-34.808388,102,Dante Ardigó,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Gobernador Julio A. Costa,Florencio Varela
+-58.2742679,-34.8111227,138,Florencio Varela,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Florencio Varela,Florencio Varela
+-58.380941,-34.791958,197,José Mármol,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Jos\u00e9 M\u00e1rmol,Almirante Brown
+-58.390637,-34.7074543,215,Lanús,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Lan\u00fas Este,Lan\u00fas
+-58.3973127,-34.7610318,238,Lomas de Zamora,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Lomas de Zamora,Lomas de Zamora
+-58.3591724,-34.7966735,324,Rafael Calzada,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Rafael Calzada,Almirante Brown
+-58.3963571,-34.7759243,386,Temperley,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Temperley,Lomas de Zamora
+-58.2594167,-34.8106377,435,Zeballos,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Estanislao Severo Zeballos,Florencio Varela
+-58.3826371,-34.6857287,151,Gerli,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Pi\u00f1eyro,Avellaneda
+-58.3788878,-34.6536422,172,Hipólito Yrigoyen,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,Barracas,Comuna 4,,
+-58.393661,-34.7270922,329,Remedios de Escalada,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,,,Remedios de Escalada,Lan\u00fas
+-58.6845919,-34.5638352,36,Bella Vista,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Bella Vista,San Miguel
+-58.5124313,-34.6026515,112,Devoto,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,Villa Devoto,Comuna 11,,
+-58.5956555,-34.604926,127,El Palomar,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Ciudad Jard\u00edn Lomas de El Palomar,Tres de Febrero
+-58.6322349,-34.5911517,177,Hurlingham,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Hurlingham,Hurlingham
+-58.7033147,-34.5513662,283,Muñiz,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Mu\u00f1iz,San Miguel
+-58.7150571,-34.5431069,361,San Miguel,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,San Miguel,San Miguel
+-58.5407521,-34.6036745,369,Santos Lugares,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,,Tres de Febrero
+-58.7976033,-34.5039897,378,Sol y Verde,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Jos\u00e9 C. Paz,Jos\u00e9 C. Paz
+-58.8768343,-34.4786824,411,Villa Astolfi,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Pilar,Pilar
+-58.6565796,-34.5784645,431,William Morris,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,William C. Morris,Hurlingham
+-59.075658,-34.4878244,51,Cabred,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,,
+-59.0067549,-34.4522459,252,Manzanares,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,,
+-58.5644918,-34.6045861,67,Caseros,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Caseros,Tres de Febrero
+-58.5274629,-34.6031533,348,Sáenz Peña,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Villa Raffo,Tres de Febrero
+-58.4935315,-34.6013699,415,Villa del Parque,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,Villa Del Parque,Comuna 11,,
+-58.8384456,-34.4909537,106,Derqui,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Presidente Derqui,Pilar
+-58.7494301,-34.5193436,194,José C. Paz,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Jos\u00e9 C. Paz,Jos\u00e9 C. Paz
+-58.9079062,-34.4687433,306,Pilar,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,,,Pilar,Pilar
+-58.4274154,-34.5796614,297,Palermo,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,Palermo,Comuna 14,,
+-58.3756885,-34.5881302,463,Retiro LSM,San Martin,F.C.G.S.M.,Retiro (LSM) - Cabred,Retiro,Comuna 1,,
+-58.2084433,-34.7640977,38,Berazategui,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Berazategui,Berazategui
+-58.280569,-34.7092611,39,Bernal,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Bernal,Quilmes
+-58.0420495,-34.8657239,83,City Bell,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,City Bell,La Plata
+-58.3805834,-34.6301709,93,Constitución,Roca,F.C.G.R.,Plaza Constitución - La Plata,Constitucion,Comuna 1,,
+-58.2961718,-34.7033242,115,Don Bosco,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Don Bosco,Quilmes
+-58.2341863,-34.7518509,133,Ezpeleta,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Ezpeleta,Quilmes
+-58.0107856,-34.879841,153,Gonnet,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Manuel B. Gonnet,La Plata
+-58.1552692,-34.7911192,176,Hudson,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Hudson,Berazategui
+-57.950174,-34.9038945,217,La Plata,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,,
+-58.0945403,-34.8366304,303,Pereyra,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Pereyra,Berazategui
+-58.1707596,-34.7823359,309,Plátanos,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Pl\u00e1tanos,Berazategui
+-58.2606591,-34.7246461,322,Quilmes,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Quilmes,Quilmes
+-57.9960622,-34.8813876,334,Ringuelet,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,,
+-58.3768325,-34.6613896,368,S. y Kosteki,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Avellaneda,Avellaneda
+-58.3449626,-34.6787475,370,Sarandí,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Sarand\u00ed,Avellaneda
+-57.9680983,-34.8909547,392,Tolosa,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,,
+-58.3253499,-34.6915355,418,Villa Domínico,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Villa Dom\u00ednico,Avellaneda
+-58.0751851,-34.8495861,419,Villa Elisa,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Villa Elisa,La Plata
+-58.3111938,-34.6975894,430,Wilde,Roca,F.C.G.R.,Plaza Constitución - La Plata,,,Wilde,Avellaneda
+-58.4436522,-34.6192442,50,Caballito,Sarmiento,F.C.D.F.S.,Once - Moreno,Caballito,Comuna 6,,
+-58.5411225,-34.6399227,84,Ciudadela,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Ciudadela,Tres de Febrero
+-58.4661766,-34.6278504,139,Flores,Sarmiento,F.C.D.F.S.,Once - Moreno,Flores,Comuna 7,,
+-58.4808913,-34.6323755,140,Floresta,Sarmiento,F.C.D.F.S.,Once - Moreno,Floresta,Comuna 10,,
+-58.5918534,-34.6445334,169,Haedo,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Haedo,Mor\u00f3n
+-58.5263409,-34.6388728,234,Liniers,Sarmiento,F.C.D.F.S.,Once - Moreno,Liniers,Comuna 9,,
+-58.6198135,-34.6482227,279,Morón,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Mor\u00f3n,Mor\u00f3n
+-58.4088675,-34.6086496,293,Once,Sarmiento,F.C.D.F.S.,Once - Moreno,Balvanera,Comuna 3,,
+-58.5643758,-34.6404544,327,Ramos Mejía,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Ramos Mejia,La Matanza
+-58.5021311,-34.6362494,423,Villa Luro,Sarmiento,F.C.D.F.S.,Once - Moreno,Villa Luro,Comuna 10,,
+-58.6425261,-34.6521562,70,Castelar,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Castelar,Mor\u00f3n
+-58.6663871,-34.6596506,186,Ituzaingó,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Ituzaing\u00f3,Ituzaing\u00f3
+-58.727685,-34.6644693,269,Merlo,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Merlo,Merlo
+-58.7895979,-34.6504439,278,Moreno,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Mariano Moreno,Moreno
+-58.7619414,-34.6582665,300,Paso del Rey,Sarmiento,F.C.D.F.S.,Once - Moreno,,,Paso del Rey,Moreno
+-58.6979972,-34.6654259,347,S. A. de Padua,Sarmiento,F.C.D.F.S.,Once - Moreno,,,San Antonio de Padua,Merlo
+-58.566917,-34.542232,79,Chilavert,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.4878391,-34.574712,150,General Urquiza,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,Villa Urquiza,Comuna 12,,
+-58.5759809,-34.5347067,190,J. L. Suárez,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.4789912,-34.5684173,236,L. M. Drago,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,Villa Urquiza,Comuna 12,,
+-58.5479328,-34.5573725,249,Malaver,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.5170793,-34.5810718,271,Miguelete,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.501898,-34.5804962,318,Pueyrredón,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,Villa Pueyrredon,Comuna 12,,
+-58.5406609,-34.5635642,353,San Andrés,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.5319579,-34.5734195,360,San Martín,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.5570784,-34.5501584,412,Villa Ballester,Mitre,F.C.G.B.M.,Retiro - J. L. Suárez,,,General San Mart\u00edn,General San Mart\u00edn
+-58.455278,-34.586944,,Federico Lacroze,Urquiza,F.C.G.U,Lacroze - Lemos,Chacarita,Comuna 15,,
+-58.4664,-34.5902,,Jose Artigas,Urquiza,F.C.G.U,Lacroze - Lemos,Chacarita,Comuna 15,,
+-58.4761,-34.5925,,Pedro N. Arata,Urquiza,F.C.G.U,Lacroze - Lemos,Agronomia,Comuna 15,,
+-58.4944,-34.5932,,Dr. Francisco Beiro,Urquiza,F.C.G.U,Lacroze - Lemos,Agronomia,Comuna 15,,
+-58.5031,-34.5945,,El Libertador,Urquiza,F.C.G.U,Lacroze - Lemos,Villa Devoto,Comuna 11,,
+-58.5106,-34.5956,,Antonio Devoto,Urquiza,F.C.G.U,Lacroze - Lemos,Villa Devoto,Comuna 11,,

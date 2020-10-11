@@ -5,4 +5,6 @@ long,lat,id,nombre,linea,linea_2,ramal,barrio,comuna
 -58.4618081,-34.5680506,35,Belgrano R,Mitre,F.C.G.R.,Retiro - J. L. Suárez,Belgrano,Comuna 13
 -58.455278,-34.586944,,Federico Lacroze,Urquiza,F.C.G.U,Lacroze - Lemos,Chacarita,Comuna 15
 -58.4199555,-34.6481153,121,Dr. Sáenz,Belgrano Sur,F.C.G.R.,Buenos Aires - M.C.G. Belgrano,Nueva Pompeya,Comuna 4
--58.4088675,-34.6086496,293,Once,Sarmiento,F.C.G.R.,Once – Moreno,Balvanera,Comuna 3
+-58.4088675,-34.6086496,293,Once,Sarmiento,F.C.G.R.,Once - Moreno,Balvanera,Comuna 3
+-58.3788878,-34.6536422,172,Hipólito Yrigoyen,Roca,F.C.G.R.,Plaza Constitución - Bosques-T,Barracas,Comuna 4
+-58.3805834,-34.6301709,93,Constitución,Roca,F.C.G.R.,Plaza Constitución - La Plata,Constitucion,Comuna 1
