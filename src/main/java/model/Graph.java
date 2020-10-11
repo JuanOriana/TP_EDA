@@ -14,7 +14,7 @@ public class Graph {
     private double maxLong = 0;
     private int matrixSide = 300;
 
-    private static final double CONNECT_PENAL_ADDITIVE = 0.5;
+    private static final double CONNECT_PENAL_ADDITIVE = 2;
     private static final double CONNECT_PENAL = 4;
 
     Cell[][] matrix = new Cell[matrixSide][matrixSide];
@@ -56,9 +56,10 @@ public class Graph {
             bussesList=searchDijkstra(n1, n2);
             removeNode(n1);
             removeNode(n2);
-        } else throw new RuntimeException("Failed to ascertain the coordinates of origin and target");
         bussesList.removeIf(coords -> coords.fromLng == coords.toLng &&
                 coords.fromLat == coords.toLat);
+        if (bussesList.isEmpty()) bussesList.add(new BusInPath("El recorrido seleccionado es optimo para realizarse a pie",start.getLat(), start.getLong(), target.getLat(), target.getLong()));
+        } else bussesList = new LinkedList<>(Collections.singletonList(new BusInPath("Las coordenadas seleccionadas se encuentran fuera del rango valido", 0, 0, 0, 0)));
         return bussesList;
     }
 
@@ -66,7 +67,8 @@ public class Graph {
         LinkedList<BusInPath> bussesList = new LinkedList<>();
         boolean found = false;
         if (!nodes.contains(start) || !nodes.contains(end)) {
-            throw new RuntimeException("The coordinates of origin or target are not contained in the valid map zone");
+            bussesList.add(new BusInPath("Las coordenadas seleccionadas se encuentran fuera del rango valido", 0, 0, 1, 1));
+            return bussesList;
         }
 
         HashSet<Node> settled = new HashSet<>();
@@ -115,6 +117,8 @@ public class Graph {
                 }
                 node = parents.get(node);
             }
+        }else{
+            bussesList.add(new BusInPath("No se logro establecer una ruta valida entre los puntos seleccionados",start.getCoordinates().getLat(), start.getCoordinates().getLong(), end.getCoordinates().getLat(), end.getCoordinates().getLong()));
         }
         return bussesList;
     }

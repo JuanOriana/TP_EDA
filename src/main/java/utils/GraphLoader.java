@@ -18,10 +18,9 @@ import java.util.Set;
 public class GraphLoader {
 
     public static void loadLine(Graph graph, Set<Node> lineNodes, int routeId, int directionId, MapPoint startPoint){
-        if (lineNodes.isEmpty()) return;
+        if (lineNodes.isEmpty() || routeId < -1 || directionId < -1) return;
         boolean isNotBus = false;
         if ((routeId==-1 || routeId==0) && (directionId ==-1 || directionId==0)) isNotBus=true;
-        if ((routeId < -1 && directionId < -1) || lineNodes.size() <= 0) return;
         Node last = Graph.closestToPoint(startPoint,lineNodes);
         if (last==null) return;
 

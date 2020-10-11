@@ -3,9 +3,7 @@ import model.Graph;
 import model.MapPoint;
 import utils.textSearch.PlaceLocation;
 import utils.textSearch.TextAnalysis;
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
