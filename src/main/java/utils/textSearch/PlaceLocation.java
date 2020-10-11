@@ -18,8 +18,9 @@ public class PlaceLocation implements Comparable<PlaceLocation> {
     this.id=id;
   }
 
-  public PlaceLocation(String name) {
+  public PlaceLocation(String name, int id) {
     this.name = name;
+    this. id = id;
   }
 
   public double getLat() {
